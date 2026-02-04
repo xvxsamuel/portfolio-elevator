@@ -8,7 +8,7 @@ interface MartinaSceneProps {
 
 export function MartinaScene({ onBack }: MartinaSceneProps) {
   return (
-    <Scene className="martina-scene" backgroundImage={martinaBg}>
+    <Scene className="martina-scene" backgroundImage={martinaBg} entryPoint="right">
       {onBack && <BackArrow onClick={onBack} />}
     </Scene>
   );

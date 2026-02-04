@@ -8,7 +8,7 @@ interface JulieSceneProps {
 
 export function JulieScene({ onBack }: JulieSceneProps) {
   return (
-    <Scene className="julie-scene" backgroundImage={julieBg}>
+    <Scene className="julie-scene" backgroundImage={julieBg} entryPoint="right">
       {onBack && <BackArrow onClick={onBack} />}
     </Scene>
   );

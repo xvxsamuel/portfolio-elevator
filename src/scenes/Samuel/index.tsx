@@ -8,7 +8,7 @@ interface SamuelSceneProps {
 
 export function SamuelScene({ onBack }: SamuelSceneProps) {
   return (
-    <Scene className="samuel-scene" backgroundImage={samuelBg}>
+    <Scene className="samuel-scene" backgroundImage={samuelBg} entryPoint="right">
       {onBack && <BackArrow onClick={onBack} />}
     </Scene>
   );

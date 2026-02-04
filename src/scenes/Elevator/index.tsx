@@ -8,7 +8,7 @@ import { ElevatorDoors } from './ElevatorDoors';
 import { ElevatorContent } from './ElevatorContent';
 import { RevealedScene } from './RevealedScene';
 import { EnterArrow } from './EnterArrow';
-import { FLOOR_SCENES, REAL_FLOORS, MIN_MOVE_DURATION, MAX_MOVE_DURATION, DOOR_OPEN_DELAY, DOOR_ANIMATION_DURATION } from './constants';
+import { FLOOR_SCENES, FLOOR_ENTRY_POINTS, REAL_FLOORS, MIN_MOVE_DURATION, MAX_MOVE_DURATION, DOOR_OPEN_DELAY, DOOR_ANIMATION_DURATION } from './constants';
 import elevatorBg from '../../assets/images/interiors/elevator/main.png';
 import type { SceneName } from '../../types/game';
 
@@ -31,6 +31,7 @@ export function ElevatorScene({ onSceneChange }: ElevatorSceneProps) {
   const { liftButtonAudio, liftMoveAudio, liftStopOpenAudio, doorOpenAudio } = useElevatorAudio();
 
   const revealedScene = currentFloor ? FLOOR_SCENES[currentFloor] : null;
+  const entryPoint = currentFloor ? FLOOR_ENTRY_POINTS[currentFloor] : 'center';
 
   const handleFloorSelect = (floor: number, closesPanel: boolean) => {
     if (REAL_FLOORS.includes(floor)) {
@@ -119,7 +120,7 @@ export function ElevatorScene({ onSceneChange }: ElevatorSceneProps) {
 
   return (
     <>
-      {showRevealedScene && <RevealedScene backgroundUrl={revealedScene} isZooming={isZooming} />}
+      {showRevealedScene && <RevealedScene backgroundUrl={revealedScene} isZooming={isZooming} entryPoint={entryPoint} />}
       
       <Scene 
         backgroundImage={elevatorBg}
