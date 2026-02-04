@@ -1,0 +1,74 @@
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 200;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.overlay.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.overlay.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.box {
+  position: absolute;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 550px;
+  height: 140px;
+  background: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: 8px;
+  padding: 20px;
+  color: var(--color-text);
+}
+
+.speaker {
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: var(--color-accent);
+  margin-bottom: 8px;
+}
+
+.text {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+
+.continueHint {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.continueText {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+.chevron {
+  font-size: 1.6rem;
+  line-height: 1;
+  color: var(--color-accent);
+  font-style: normal;
+  animation: chevronBounce 1s ease-in-out infinite;
+}
+
+@keyframes chevronBounce {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(4px);
+  }
+}

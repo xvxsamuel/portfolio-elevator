@@ -1,0 +1,69 @@
+.flyContainer {
+  position: absolute;
+  width: var(--fly-size, 2%);
+  height: var(--fly-size, 2%);
+  pointer-events: none;
+  z-index: 10;
+}
+
+.fly {
+  position: absolute;
+  animation: flyOrganic 2.4s linear infinite;
+  animation-delay: var(--fly-delay, 0s);
+}
+
+.flyImage {
+  width: 100%;
+  height: auto;
+  filter: blur(0.5px);
+}
+
+@keyframes flyOrganic {
+  /* Horizontal ellipse pattern - wider than tall */
+  /* Sprite faces left by default, so scaleX(-1) = facing right, scaleX(1) = facing left */
+  
+  /* Moving RIGHT - face right */
+  0% {
+    transform: translate(0, 0) scaleX(-1);
+  }
+  10% {
+    transform: translate(18px, -8px) scaleX(-1);
+  }
+  20% {
+    transform: translate(35px, -12px) scaleX(-1);
+  }
+  29.9% {
+    transform: translate(42px, -8px) scaleX(-1);
+  }
+  /* Instant flip to face left */
+  30% {
+    transform: translate(42px, -8px) scaleX(1);
+  }
+  /* Moving LEFT - face left */
+  40% {
+    transform: translate(35px, 0px) scaleX(1);
+  }
+  50% {
+    transform: translate(18px, 6px) scaleX(1);
+  }
+  60% {
+    transform: translate(-5px, 8px) scaleX(1);
+  }
+  69.9% {
+    transform: translate(-25px, 4px) scaleX(1);
+  }
+  /* Instant flip to face right */
+  70% {
+    transform: translate(-25px, 4px) scaleX(-1);
+  }
+  /* Moving RIGHT - face right */
+  80% {
+    transform: translate(-30px, -4px) scaleX(-1);
+  }
+  90% {
+    transform: translate(-18px, -6px) scaleX(-1);
+  }
+  100% {
+    transform: translate(0, 0) scaleX(-1);
+  }
+}

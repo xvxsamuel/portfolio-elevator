@@ -1,0 +1,104 @@
+import { createContext, useContext, useState, useCallback, useMemo } from 'react';
+import type { ReactNode } from 'react';
+import type { SceneName, InventoryItem, GameContextType, DialogueData } from '../types/game';
+
+const GameContext = createContext<GameContextType | null>(null);
+
+export function useGame() {
+  const context = useContext(GameContext);
+  if (!context) {
+    throw new Error('useGame must be used within a GameProvider');
+  }
+  return context;
+}
+
+interface GameProviderProps {
+  children: ReactNode;
+}
+
+export function GameProvider({ children }: GameProviderProps) {
+  const [currentScene, setCurrentScene] = useState<SceneName>('loading');
+  const [inventory, setInventory] = useState<InventoryItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadingProgress, setLoadingProgress] = useState(0);
+  const [parallaxEnabled, setParallaxEnabledState] = useState(true);
+  const [masterVolume, setMasterVolumeState] = useState(100);
+  const [modalOpen, setModalOpenState] = useState(false);
+  const [dialogue, setDialogue] = useState<DialogueData | null>(null);
+  const [dialogueCount, setDialogueCount] = useState(0);
+  const [playerName, setPlayerNameState] = useState('');
+  const [currentFloor, setCurrentFloorState] = useState<number | null>(null);
+
+  const setScene = useCallback((scene: SceneName) => {
+    setCurrentScene(scene);
+  }, []);
+
+  const addToInventory = useCallback((item: InventoryItem) => {
+    setInventory((prev) => [...prev, item]);
+  }, []);
+
+  const removeFromInventory = useCallback((itemId: string) => {
+    setInventory((prev) => prev.filter((item) => item.id !== itemId));
+  }, []);
+
+  const setLoading = useCallback((loading: boolean) => {
+    setIsLoading(loading);
+  }, []);
+
+  const setParallaxEnabled = useCallback((enabled: boolean) => {
+    setParallaxEnabledState(enabled);
+  }, []);
+
+  const setMasterVolume = useCallback((volume: number) => {
+    setMasterVolumeState(volume);
+  }, []);
+
+  const setModalOpen = useCallback((open: boolean) => {
+    setModalOpenState(open);
+  }, []);
+
+  const showDialogueFunc = useCallback((text: string, speaker?: string) => {
+    setDialogue({ text, speaker });
+    setDialogueCount(prev => prev + 1);
+  }, []);
+
+  const dismissDialogue = useCallback(() => {
+    setDialogue(null);
+  }, []);
+
+  const setPlayerName = useCallback((name: string) => {
+    setPlayerNameState(name);
+  }, []);
+
+  const setCurrentFloor = useCallback((floor: number | null) => {
+    setCurrentFloorState(floor);
+  }, []);
+
+  const value: GameContextType = useMemo(() => ({
+    currentScene,
+    inventory,
+    isLoading,
+    loadingProgress,
+    parallaxEnabled,
+    masterVolume,
+    modalOpen,
+    dialogue,
+    dialogueCount,
+    playerName,
+    currentFloor,
+    setScene,
+    addToInventory,
+    removeFromInventory,
+    setLoading,
+    setLoadingProgress,
+    setParallaxEnabled,
+    setMasterVolume,
+    setModalOpen,
+    showDialogue: showDialogueFunc,
+    dismissDialogue,
+    setPlayerName,
+    setCurrentFloor,
+  }), [currentScene, inventory, isLoading, loadingProgress, parallaxEnabled, masterVolume, modalOpen, dialogue, dialogueCount, playerName, currentFloor, setScene, addToInventory, removeFromInventory, setLoading, setParallaxEnabled, setMasterVolume, setModalOpen, showDialogueFunc, dismissDialogue, setPlayerName, setCurrentFloor]);
+
+  return <GameContext.Provider value={value}>{children}</GameContext.Provider>;
+}

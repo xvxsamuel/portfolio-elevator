@@ -1,0 +1,33 @@
+.wrapper {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-bg);
+}
+
+.container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-width: calc(100vh * 16 / 9);
+  max-height: calc(100vw * 9 / 16);
+  aspect-ratio: 16 / 9;
+  background-color: #000;
+  overflow: hidden;
+}
+
+.parallaxLayer {
+  position: absolute;
+  inset: -3%;
+  width: 106%;
+  height: 106%;
+}
+
+@media (max-aspect-ratio: 16/9) {
+  .container {
+    width: auto;
+    height: 100vh;
+  }
+}

@@ -1,0 +1,19 @@
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 300;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.fading {
+  opacity: 0;
+}
+
+.content {
+  cursor: default;
+}

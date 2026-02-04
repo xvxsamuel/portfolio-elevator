@@ -1,0 +1,29 @@
+.panel {
+  position: relative;
+}
+
+.background {
+  display: block;
+  max-width: 80vw;
+  max-height: 80vh;
+}
+
+.button {
+  position: absolute;
+  width: 17%;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+  transform: translate(-50%, -50%);
+}
+
+.button img {
+  width: 100%;
+  display: block;
+}
+
+.button:active {
+  transform: translate(-50%, -50%) scale(0.9);
+}
