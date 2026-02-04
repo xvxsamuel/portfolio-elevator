@@ -1,1 +1,1 @@
-export const DEBUG_HOTSPOTS = false;
+export const DEBUG_MODE = true;

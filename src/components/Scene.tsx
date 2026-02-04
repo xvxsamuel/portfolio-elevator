@@ -20,6 +20,7 @@ interface SceneProps {
   shakeStopDuration?: number;
   isBlurred?: boolean;
   isFadingOut?: boolean;
+  isReturning?: boolean;
   entryPoint?: EntryPoint;
 }
 
@@ -32,6 +33,7 @@ export function Scene({
   shakeStopDuration = 3,
   isBlurred = false,
   isFadingOut = false,
+  isReturning = false,
   entryPoint = 'center',
 }: SceneProps) {
   const [isEntering, setIsEntering] = useState(entryPoint !== 'center');
@@ -47,6 +49,7 @@ export function Scene({
     styles.scene,
     isBlurred && styles.blurred,
     isFadingOut && styles.fadingOut,
+    isReturning && styles.returning,
     shakePhase === 'building' && styles.shakeBuilding,
     shakePhase === 'full' && styles.shakeFull,
     shakePhase === 'stopping' && styles.shakeStopping,

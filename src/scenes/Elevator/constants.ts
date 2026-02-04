@@ -2,7 +2,6 @@ import martinaBg from '../../assets/images/interiors/martina/main.png';
 import julieBg from '../../assets/images/interiors/julie/main.png';
 import lauraBg from '../../assets/images/interiors/laura/main.png';
 import samuelBg from '../../assets/images/interiors/samuel/main.png';
-import type { EntryPoint } from '../../components/Scene';
 
 export const FLOOR_SCENES: Record<number, string> = {
   1: martinaBg,
@@ -11,11 +10,11 @@ export const FLOOR_SCENES: Record<number, string> = {
   8: samuelBg,
 };
 
-export const FLOOR_ENTRY_POINTS: Record<number, EntryPoint> = {
-  1: 'right',
-  4: 'right',
+export const FLOOR_ENTRY_POSITIONS: Record<number, string> = {
+  1: '140% -80%',
+  4: '250% -78%',
   5: 'center',
-  8: 'right',
+  8: '115% -80%',
 };
 
 export const REAL_FLOORS = [1, 4, 5, 8];

@@ -1,4 +1,4 @@
-import styles from './ElevatorScene.module.css';
+import { Arrow } from '../../components/ui/Arrow';
 
 interface EnterArrowProps {
   visible: boolean;
@@ -9,8 +9,12 @@ export function EnterArrow({ visible, onClick }: EnterArrowProps) {
   if (!visible) return null;
   
   return (
-    <div className={styles.arrow} onClick={onClick}>
-      <span>▲</span>
-    </div>
+    <Arrow 
+      onClick={onClick} 
+      direction="up" 
+      pulse 
+      perspective 
+      style={{ bottom: '17%', left: '50%', transform: 'translateX(-50%) perspective(200px) rotateX(60deg)' }}
+    />
   );
 }

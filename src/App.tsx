@@ -13,6 +13,7 @@ import { MartinaScene } from './scenes/Martina';
 import { JulieScene } from './scenes/Julie';
 import { SamuelScene } from './scenes/Samuel';
 import { usePreloader } from './hooks/usePreloader';
+import { DEBUG_MODE } from './config';
 
 type IntroStep = 'where' | 'remember' | 'name-input' | 'final' | 'done';
 
@@ -20,8 +21,14 @@ function GameContent() {
   const { currentScene, isLoading, setLoading, setLoadingProgress, setScene, modalOpen, dialogue, dialogueCount, showDialogue, dismissDialogue, setPlayerName } = useGame();
   const { progress, isLoaded } = usePreloader();
   const [showTitleScreen, setShowTitleScreen] = useState(false);
-  const [introStep, setIntroStep] = useState<IntroStep | null>(null);
-  const introStarted = useRef(false);
+  const [introStep, setIntroStep] = useState<IntroStep | null>(DEBUG_MODE ? 'done' : null);
+  const introStarted = useRef(DEBUG_MODE);
+
+  useEffect(() => {
+    if (DEBUG_MODE) {
+      setPlayerName('debug');
+    }
+  }, [setPlayerName]);
 
   useEffect(() => {
     setLoadingProgress(progress);

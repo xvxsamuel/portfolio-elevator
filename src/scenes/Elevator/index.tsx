@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Scene } from '../../components/Scene';
 import { Modal } from '../../components/ui/Modal';
 import { ButtonsPanel } from '../../components/ui/ButtonsPanel';
@@ -8,7 +8,8 @@ import { ElevatorDoors } from './ElevatorDoors';
 import { ElevatorContent } from './ElevatorContent';
 import { RevealedScene } from './RevealedScene';
 import { EnterArrow } from './EnterArrow';
-import { FLOOR_SCENES, FLOOR_ENTRY_POINTS, REAL_FLOORS, MIN_MOVE_DURATION, MAX_MOVE_DURATION, DOOR_OPEN_DELAY, DOOR_ANIMATION_DURATION } from './constants';
+import { FLOOR_SCENES, FLOOR_ENTRY_POSITIONS, REAL_FLOORS, MIN_MOVE_DURATION, MAX_MOVE_DURATION, DOOR_OPEN_DELAY, DOOR_ANIMATION_DURATION } from './constants';
+import { DEBUG_MODE } from '../../config';
 import elevatorBg from '../../assets/images/interiors/elevator/main.png';
 import type { SceneName } from '../../types/game';
 
@@ -19,6 +20,8 @@ interface ElevatorSceneProps {
 export function ElevatorScene({ onSceneChange }: ElevatorSceneProps) {
   const { currentFloor, setCurrentFloor } = useGame();
   
+  const [isReturning, setIsReturning] = useState(currentFloor !== null);
+  
   const [showButtons, setShowButtons] = useState(false);
   const [isFading, setIsFading] = useState(false);
   const [shakePhase, setShakePhase] = useState<'none' | 'building' | 'full' | 'stopping'>('none');
@@ -28,10 +31,17 @@ export function ElevatorScene({ onSceneChange }: ElevatorSceneProps) {
   const [isZooming, setIsZooming] = useState(false);
   const [showRevealedScene, setShowRevealedScene] = useState(currentFloor !== null);
   
-  const { liftButtonAudio, liftMoveAudio, liftStopOpenAudio, doorOpenAudio } = useElevatorAudio();
+  const { liftButtonAudio, liftMoveAudio, liftStopOpenAudio, doorOpenAudio, fadeOutAmbience } = useElevatorAudio();
+
+  useEffect(() => {
+    if (isReturning) {
+      const timer = setTimeout(() => setIsReturning(false), 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [isReturning]);
 
   const revealedScene = currentFloor ? FLOOR_SCENES[currentFloor] : null;
-  const entryPoint = currentFloor ? FLOOR_ENTRY_POINTS[currentFloor] : 'center';
+  const entryPosition = currentFloor ? FLOOR_ENTRY_POSITIONS[currentFloor] : 'center';
 
   const handleFloorSelect = (floor: number, closesPanel: boolean) => {
     if (REAL_FLOORS.includes(floor)) {
@@ -50,7 +60,7 @@ export function ElevatorScene({ onSceneChange }: ElevatorSceneProps) {
         setDoorsOpen(false);
       }
       
-      const moveDuration = MIN_MOVE_DURATION + Math.random() * (MAX_MOVE_DURATION - MIN_MOVE_DURATION);
+      const moveDuration = DEBUG_MODE ? MIN_MOVE_DURATION : MIN_MOVE_DURATION + Math.random() * (MAX_MOVE_DURATION - MIN_MOVE_DURATION);
       const playbackRate = MAX_MOVE_DURATION / moveDuration;
       
       const buildDuration = moveDuration * 0.4;
@@ -105,7 +115,9 @@ export function ElevatorScene({ onSceneChange }: ElevatorSceneProps) {
   };
 
   const handleEnterScene = () => {
+    setIsReturning(false);
     setIsZooming(true);
+    fadeOutAmbience(2000);
     setTimeout(() => {
       if (onSceneChange && currentFloor) {
         onSceneChange(`floor-${currentFloor}` as SceneName);
@@ -120,7 +132,7 @@ export function ElevatorScene({ onSceneChange }: ElevatorSceneProps) {
 
   return (
     <>
-      {showRevealedScene && <RevealedScene backgroundUrl={revealedScene} isZooming={isZooming} entryPoint={entryPoint} />}
+      {showRevealedScene && <RevealedScene backgroundUrl={revealedScene} isZooming={isZooming} isReturning={isReturning} entryPosition={entryPosition} />}
       
       <Scene 
         backgroundImage={elevatorBg}
@@ -129,6 +141,7 @@ export function ElevatorScene({ onSceneChange }: ElevatorSceneProps) {
         shakeBuildDuration={shakeDurations.build}
         shakeStopDuration={shakeDurations.stop}
         isFadingOut={isZooming}
+        isReturning={isReturning}
       >
         <ElevatorDoors isOpen={doorsOpen} />
         <EnterArrow visible={arrowVisible && !isZooming} onClick={handleEnterScene} />

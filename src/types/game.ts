@@ -39,6 +39,7 @@ export interface GameState {
   dialogueCount: number;
   playerName: string;
   currentFloor: number | null;
+  debugMode: boolean;
 }
 
 export interface GameContextType extends GameState {
@@ -54,4 +55,5 @@ export interface GameContextType extends GameState {
   dismissDialogue: () => void;
   setPlayerName: (name: string) => void;
   setCurrentFloor: (floor: number | null) => void;
+  setDebugMode: (enabled: boolean) => void;
 }

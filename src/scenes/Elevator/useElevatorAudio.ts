@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useCallback } from 'react';
 import { useGame } from '../../context/GameProvider';
 import liftButtonSound from '../../assets/audio/elevator/lift_ button.mp3';
 import liftMoveSound from '../../assets/audio/elevator/lift_move.mp3';
@@ -16,8 +16,11 @@ export function useElevatorAudio() {
   const doorOpenAudio = useRef(new Audio(doorOpenSound));
   const elevatorAmbienceAudio = useRef(new Audio(elevatorAmbienceSound));
   const flyAudio = useRef(new Audio(flySound));
+  const fadeIntervalRef = useRef<number | null>(null);
+  const isFadingOut = useRef(false);
 
   useEffect(() => {
+    if (isFadingOut.current) return;
     const volumeMultiplier = masterVolume / 100;
     liftButtonAudio.current.volume = volumeMultiplier;
     liftMoveAudio.current.volume = volumeMultiplier;
@@ -88,7 +91,41 @@ export function useElevatorAudio() {
       clearTimeout(holdTimeout);
       clearInterval(fadeInInterval);
       clearInterval(fadeOutInterval);
+      if (fadeIntervalRef.current) {
+        clearInterval(fadeIntervalRef.current);
+      }
     };
+  }, []);
+
+  const fadeOutAmbience = useCallback((duration: number = 2000) => {
+    isFadingOut.current = true;
+    const ambience = elevatorAmbienceAudio.current;
+    const fly = flyAudio.current;
+    const startAmbienceVolume = ambience.volume;
+    const startFlyVolume = fly.volume;
+    const fadeSteps = 40;
+    const stepDuration = duration / fadeSteps;
+    let step = 0;
+
+    if (fadeIntervalRef.current) {
+      clearInterval(fadeIntervalRef.current);
+    }
+
+    fadeIntervalRef.current = window.setInterval(() => {
+      step++;
+      const progress = step / fadeSteps;
+      ambience.volume = startAmbienceVolume * (1 - progress);
+      fly.volume = startFlyVolume * (1 - progress);
+      
+      if (step >= fadeSteps) {
+        if (fadeIntervalRef.current) {
+          clearInterval(fadeIntervalRef.current);
+          fadeIntervalRef.current = null;
+        }
+        ambience.pause();
+        fly.pause();
+      }
+    }, stepDuration);
   }, []);
 
   return {
@@ -96,5 +133,6 @@ export function useElevatorAudio() {
     liftMoveAudio,
     liftStopOpenAudio,
     doorOpenAudio,
+    fadeOutAmbience,
   };
 }

@@ -1,5 +1,5 @@
 import { type CSSProperties } from 'react';
-import { DEBUG_HOTSPOTS } from '../config';
+import { useGame } from '../context/GameProvider';
 import styles from './Hotspot.module.css';
 
 interface HotspotProps {
@@ -12,7 +12,7 @@ interface HotspotProps {
 }
 
 export function Hotspot({ x, y, width, height, onClick, label }: HotspotProps) {
-  const debug = DEBUG_HOTSPOTS;
+  const { debugMode } = useGame();
   const style: CSSProperties = {
     position: 'absolute',
     left: `${x}%`,
@@ -24,11 +24,11 @@ export function Hotspot({ x, y, width, height, onClick, label }: HotspotProps) {
 
   return (
     <div 
-      className={`${styles.hotspot} ${debug ? styles.debug : ''}`}
+      className={`${styles.hotspot} ${debugMode ? styles.debug : ''}`}
       style={style}
       onClick={onClick}
     >
-      {debug && label && <span className={styles.label}>{label}</span>}
+      {debugMode && label && <span className={styles.label}>{label}</span>}
     </div>
   );
 }

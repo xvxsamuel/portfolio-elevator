@@ -9,7 +9,12 @@ interface SamuelSceneProps {
 export function SamuelScene({ onBack }: SamuelSceneProps) {
   return (
     <Scene className="samuel-scene" backgroundImage={samuelBg} entryPoint="right">
-      {onBack && <BackArrow onClick={onBack} />}
+      {onBack && (
+        <BackArrow 
+          onClick={onBack}
+          style={{ bottom: '3%', left: '80%', transform: 'translateX(-50%) perspective(200px) rotateX(-60deg)' }}
+        />
+      )}
     </Scene>
   );
 }

@@ -22,6 +22,7 @@
   background-position: center;
   background-repeat: no-repeat;
   z-index: 2;
+  filter: drop-shadow(0 -8px 12px rgba(0, 0, 0, 0.5));
 }
 
 .blurred .content {
@@ -56,6 +57,23 @@
 
 .fadingOut .content {
   animation: walkThrough 2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.returning {
+  pointer-events: none;
+}
+
+.returning .content {
+  animation: walkBack 1s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+@keyframes walkBack {
+  0% {
+    transform: scale(6);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 @keyframes shake {

@@ -10,7 +10,7 @@ interface TitleScreenProps {
 }
 
 export function TitleScreen({ isVisible, onStart }: TitleScreenProps) {
-  const { parallaxEnabled, setParallaxEnabled, masterVolume, setMasterVolume } = useGame();
+  const { parallaxEnabled, setParallaxEnabled, masterVolume, setMasterVolume, debugMode, setDebugMode } = useGame();
   const [showOptions, setShowOptions] = useState(false);
   const [isFadingOut, setIsFadingOut] = useState(false);
   const [isShaftFading, setIsShaftFading] = useState(false);
@@ -83,6 +83,16 @@ export function TitleScreen({ isVisible, onStart }: TitleScreenProps) {
                     className={styles.slider}
                   />
                   <span className={styles.volumeValue}>{masterVolume}%</span>
+                </div>
+
+                <div className={styles.optionRow}>
+                  <span className={styles.optionLabel}>Debug Mode</span>
+                  <button 
+                    className={`${styles.toggle} ${debugMode ? styles.toggleOn : ''}`}
+                    onClick={() => setDebugMode(!debugMode)}
+                  >
+                    {debugMode ? 'ON' : 'OFF'}
+                  </button>
                 </div>
                 
                 <button 

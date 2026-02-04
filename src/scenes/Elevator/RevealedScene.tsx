@@ -1,29 +1,25 @@
 import styles from './ElevatorScene.module.css';
-import type { EntryPoint } from '../../components/Scene';
 
 interface RevealedSceneProps {
   backgroundUrl: string | null;
   isZooming: boolean;
-  entryPoint?: EntryPoint;
+  isReturning?: boolean;
+  entryPosition?: string;
 }
 
-const ENTRY_POSITIONS: Record<EntryPoint, string> = {
-  center: 'center',
-  left: '0% center',
-  right: '100% 100%',
-  top: 'center 0%',
-  bottom: 'center 100%',
-};
-
-export function RevealedScene({ backgroundUrl, isZooming, entryPoint = 'center' }: RevealedSceneProps) {
+export function RevealedScene({ backgroundUrl, isZooming, isReturning = false, entryPosition = 'center' }: RevealedSceneProps) {
   if (!backgroundUrl) return null;
+  let bgPosition = entryPosition;
+  if (isZooming) {
+    bgPosition = 'center';
+  }
   
   return (
     <div 
-      className={`${styles.revealedScene} ${isZooming ? styles.revealedSceneZooming : ''}`}
+      className={`${styles.revealedScene} ${isZooming ? styles.revealedSceneZooming : ''} ${isReturning ? styles.revealedSceneReturning : ''}`}
       style={{ 
         backgroundImage: `url(${backgroundUrl})`,
-        backgroundPosition: ENTRY_POSITIONS[entryPoint],
+        backgroundPosition: bgPosition,
       }}
     />
   );

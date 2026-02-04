@@ -9,7 +9,12 @@ interface LauraSceneProps {
 export function LauraScene({ onBack }: LauraSceneProps) {
   return (
     <Scene className="laura-scene" backgroundImage={lauraBg}>
-      {onBack && <BackArrow onClick={onBack} />}
+      {onBack && (
+        <BackArrow 
+          onClick={onBack}
+          style={{ bottom: '5%', left: '75%', transform: 'translateX(-50%) perspective(200px) rotateX(-60deg)' }}
+        />
+      )}
     </Scene>
   );
 }

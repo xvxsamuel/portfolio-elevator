@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useCallback, useMemo } from 'react';
 import type { ReactNode } from 'react';
 import type { SceneName, InventoryItem, GameContextType, DialogueData } from '../types/game';
+import { DEBUG_MODE } from '../config';
 
 const GameContext = createContext<GameContextType | null>(null);
 
@@ -28,6 +29,7 @@ export function GameProvider({ children }: GameProviderProps) {
   const [dialogueCount, setDialogueCount] = useState(0);
   const [playerName, setPlayerNameState] = useState('');
   const [currentFloor, setCurrentFloorState] = useState<number | null>(null);
+  const [debugMode, setDebugModeState] = useState(DEBUG_MODE);
 
   const setScene = useCallback((scene: SceneName) => {
     setCurrentScene(scene);
@@ -74,6 +76,10 @@ export function GameProvider({ children }: GameProviderProps) {
     setCurrentFloorState(floor);
   }, []);
 
+  const setDebugMode = useCallback((enabled: boolean) => {
+    setDebugModeState(enabled);
+  }, []);
+
   const value: GameContextType = useMemo(() => ({
     currentScene,
     inventory,
@@ -86,6 +92,7 @@ export function GameProvider({ children }: GameProviderProps) {
     dialogueCount,
     playerName,
     currentFloor,
+    debugMode,
     setScene,
     addToInventory,
     removeFromInventory,
@@ -98,7 +105,8 @@ export function GameProvider({ children }: GameProviderProps) {
     dismissDialogue,
     setPlayerName,
     setCurrentFloor,
-  }), [currentScene, inventory, isLoading, loadingProgress, parallaxEnabled, masterVolume, modalOpen, dialogue, dialogueCount, playerName, currentFloor, setScene, addToInventory, removeFromInventory, setLoading, setParallaxEnabled, setMasterVolume, setModalOpen, showDialogueFunc, dismissDialogue, setPlayerName, setCurrentFloor]);
+    setDebugMode,
+  }), [currentScene, inventory, isLoading, loadingProgress, parallaxEnabled, masterVolume, modalOpen, dialogue, dialogueCount, playerName, currentFloor, debugMode, setScene, addToInventory, removeFromInventory, setLoading, setParallaxEnabled, setMasterVolume, setModalOpen, showDialogueFunc, dismissDialogue, setPlayerName, setCurrentFloor, setDebugMode]);
 
   return <GameContext.Provider value={value}>{children}</GameContext.Provider>;
 }

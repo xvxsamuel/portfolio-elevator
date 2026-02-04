@@ -1,15 +1,21 @@
-import styles from './BackArrow.module.css';
+import { Arrow } from './Arrow';
 
 interface BackArrowProps {
   onClick: () => void;
   style?: React.CSSProperties;
-  arrow?: string;
+  direction?: 'up' | 'down' | 'left' | 'right';
+  pulse?: boolean;
+  perspective?: boolean;
 }
 
-export function BackArrow({ onClick, style, arrow = '▼' }: BackArrowProps) {
+export function BackArrow({ onClick, style, direction = 'down', pulse = true, perspective = true }: BackArrowProps) {
   return (
-    <div className={styles.arrow} onClick={onClick} style={style}>
-      <span>{arrow}</span>
-    </div>
+    <Arrow 
+      onClick={onClick} 
+      direction={direction}
+      pulse={pulse}
+      perspective={perspective}
+      style={style}
+    />
   );
 }
