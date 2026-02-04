@@ -7,14 +7,9 @@ interface ArrowProps {
   className?: string;
   pulse?: boolean;
   perspective?: boolean;
+  rotation?: { x?: number; y?: number; z?: number };
+  visible?: boolean;
 }
-
-const ARROW_SYMBOLS = {
-  up: '▲',
-  down: '▼',
-  left: '◀',
-  right: '▶',
-};
 
 export function Arrow({ 
   onClick, 
@@ -23,17 +18,30 @@ export function Arrow({
   className = '',
   pulse = false,
   perspective = false,
+  rotation,
+  visible = true,
 }: ArrowProps) {
   const classes = [
     styles.arrow,
     pulse && styles.pulse,
     perspective && styles.perspective,
+    styles[direction],
+    visible ? styles.visible : styles.hidden,
     className,
   ].filter(Boolean).join(' ');
 
+  const rotationTransform = rotation 
+    ? `rotateX(${rotation.x ?? 0}deg) rotateY(${rotation.y ?? 0}deg) rotateZ(${rotation.z ?? 0}deg)`
+    : '';
+
+  const combinedStyle: React.CSSProperties = {
+    ...style,
+    ...(rotation && { transform: `${style?.transform || ''} ${rotationTransform}`.trim() }),
+  };
+
   return (
-    <div className={classes} onClick={onClick} style={style}>
-      <span>{ARROW_SYMBOLS[direction]}</span>
+    <div className={classes} onClick={onClick} style={combinedStyle}>
+      <div className={styles.triangle} />
     </div>
   );
 }

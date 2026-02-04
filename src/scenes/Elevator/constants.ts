@@ -21,4 +21,4 @@ export const REAL_FLOORS = [1, 4, 5, 8];
 export const MIN_MOVE_DURATION = 6000;
 export const MAX_MOVE_DURATION = 14000;
 export const DOOR_OPEN_DELAY = 1500;
-export const DOOR_ANIMATION_DURATION = 2500;
+export const DOOR_ANIMATION_DURATION = 2000;

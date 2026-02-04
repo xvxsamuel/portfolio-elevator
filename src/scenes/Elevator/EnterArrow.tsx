@@ -6,15 +6,14 @@ interface EnterArrowProps {
 }
 
 export function EnterArrow({ visible, onClick }: EnterArrowProps) {
-  if (!visible) return null;
-  
   return (
     <Arrow 
       onClick={onClick} 
       direction="up" 
       pulse 
-      perspective 
-      style={{ bottom: '17%', left: '50%', transform: 'translateX(-50%) perspective(200px) rotateX(60deg)' }}
+      perspective
+      visible={visible}
+      style={{ bottom: '18%', left: '50%', transform: 'translateX(-50%) perspective(200px) rotateX(60deg) scale(1.5)' }}
     />
   );
 }

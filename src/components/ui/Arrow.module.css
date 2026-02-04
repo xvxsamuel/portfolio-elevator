@@ -3,18 +3,58 @@
   z-index: 150;
   cursor: pointer;
   pointer-events: auto;
+  transition: opacity 0.15s ease;
 }
 
-.arrow span {
-  display: block;
-  font-size: 3rem;
-  color: rgba(255, 255, 255, 0.8);
-  -webkit-text-stroke: 2px black;
-  transition: color 0.2s ease, transform 0.2s ease;
+.visible {
+  opacity: 1;
+  pointer-events: auto;
+  animation: fadeInThenPulse 1.5s ease-in-out;
+  animation-delay: 0s;
+  animation-fill-mode: forwards;
 }
 
-.arrow:hover span {
-  color: var(--color-accent);
+.visible.pulse {
+  animation: fadeIn 0.3s ease forwards, arrowPulse 1.5s ease-in-out 0.3s infinite;
+}
+
+.hidden {
+  opacity: 0 !important;
+  pointer-events: none;
+  animation: none !important;
+}
+
+.triangle {
+  width: 30px;
+  height: 30px;
+  border: 5px solid rgba(255, 255, 255, 0.85);
+  border-top: none;
+  border-left: none;
+  transition: border-color 0.2s ease;
+  filter: drop-shadow(1px 1px 0 black) 
+          drop-shadow(-1px -1px 0 black) 
+          drop-shadow(1px -1px 0 black) 
+          drop-shadow(-1px 1px 0 black);
+}
+
+.arrow:hover .triangle {
+  border-color: var(--color-accent);
+}
+
+.down .triangle {
+  transform: rotate(45deg);
+}
+
+.up .triangle {
+  transform: rotate(-135deg);
+}
+
+.left .triangle {
+  transform: rotate(135deg);
+}
+
+.right .triangle {
+  transform: rotate(-45deg);
 }
 
 .pulse {
@@ -23,6 +63,15 @@
 
 .perspective {
   transform: perspective(200px) rotateX(60deg);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes arrowPulse {

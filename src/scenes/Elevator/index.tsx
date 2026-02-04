@@ -9,36 +9,39 @@ import { ElevatorContent } from './ElevatorContent';
 import { RevealedScene } from './RevealedScene';
 import { EnterArrow } from './EnterArrow';
 import { FLOOR_SCENES, FLOOR_ENTRY_POSITIONS, REAL_FLOORS, MIN_MOVE_DURATION, MAX_MOVE_DURATION, DOOR_OPEN_DELAY, DOOR_ANIMATION_DURATION } from './constants';
-import { DEBUG_MODE } from '../../config';
 import elevatorBg from '../../assets/images/interiors/elevator/main.png';
 import type { SceneName } from '../../types/game';
+
+type ElevatorState = 'idle' | 'closing-doors' | 'moving' | 'stopped' | 'doors-opening' | 'arrived' | 'entering' | 'returning';
 
 interface ElevatorSceneProps {
   onSceneChange?: (scene: SceneName) => void;
 }
 
 export function ElevatorScene({ onSceneChange }: ElevatorSceneProps) {
-  const { currentFloor, setCurrentFloor } = useGame();
+  const { currentFloor, setCurrentFloor, debugMode } = useGame();
   
-  const [isReturning, setIsReturning] = useState(currentFloor !== null);
-  
+  const [state, setState] = useState<ElevatorState>(currentFloor !== null ? 'returning' : 'idle');
   const [showButtons, setShowButtons] = useState(false);
   const [isFading, setIsFading] = useState(false);
   const [shakePhase, setShakePhase] = useState<'none' | 'building' | 'full' | 'stopping'>('none');
   const [shakeDurations, setShakeDurations] = useState({ build: 4, stop: 3 });
-  const [doorsOpen, setDoorsOpen] = useState(currentFloor !== null);
-  const [arrowVisible, setArrowVisible] = useState(currentFloor !== null);
-  const [isZooming, setIsZooming] = useState(false);
-  const [showRevealedScene, setShowRevealedScene] = useState(currentFloor !== null);
   
   const { liftButtonAudio, liftMoveAudio, liftStopOpenAudio, doorOpenAudio, fadeOutAmbience } = useElevatorAudio();
 
+  const doorsOpen = state === 'arrived' || state === 'entering' || state === 'returning' || state === 'doors-opening';
+  const arrowVisible = state === 'arrived';
+  const showRevealedScene = currentFloor !== null && state !== 'idle';
+  const isSceneHidden = state === 'moving';
+  const isEntering = state === 'entering';
+  const isReturning = state === 'returning';
+
   useEffect(() => {
-    if (isReturning) {
-      const timer = setTimeout(() => setIsReturning(false), 2000);
+    if (state === 'returning') {
+      const timer = setTimeout(() => setState('arrived'), 2000);
       return () => clearTimeout(timer);
     }
-  }, [isReturning]);
+  }, [state]);
 
   const revealedScene = currentFloor ? FLOOR_SCENES[currentFloor] : null;
   const entryPosition = currentFloor ? FLOOR_ENTRY_POSITIONS[currentFloor] : 'center';
@@ -54,13 +57,12 @@ export function ElevatorScene({ onSceneChange }: ElevatorSceneProps) {
       const closeDoorsDelay = needsToCloseDoors ? DOOR_ANIMATION_DURATION : 0;
       
       if (needsToCloseDoors) {
-        setArrowVisible(false);
         doorOpenAudio.current.currentTime = 0;
         doorOpenAudio.current.play();
-        setDoorsOpen(false);
+        setState('closing-doors');
       }
       
-      const moveDuration = DEBUG_MODE ? MIN_MOVE_DURATION : MIN_MOVE_DURATION + Math.random() * (MAX_MOVE_DURATION - MIN_MOVE_DURATION);
+      const moveDuration = debugMode ? MIN_MOVE_DURATION : MIN_MOVE_DURATION + Math.random() * (MAX_MOVE_DURATION - MIN_MOVE_DURATION);
       const playbackRate = MAX_MOVE_DURATION / moveDuration;
       
       const buildDuration = moveDuration * 0.4;
@@ -68,36 +70,31 @@ export function ElevatorScene({ onSceneChange }: ElevatorSceneProps) {
       setShakeDurations({ build: buildDuration / 1000, stop: stopDuration / 1000 });
       
       setTimeout(() => {
-        setShowRevealedScene(false);
         setCurrentFloor(floor);
         setShowButtons(false);
         setIsFading(false);
+        setState('moving');
         setShakePhase('building');
         
         liftMoveAudio.current.currentTime = 0;
         liftMoveAudio.current.playbackRate = playbackRate;
         liftMoveAudio.current.play();
         
-        setTimeout(() => {
-          setShakePhase('full');
-        }, buildDuration);
-        
-        setTimeout(() => {
-          setShakePhase('stopping');
-        }, moveDuration - stopDuration);
+        setTimeout(() => setShakePhase('full'), buildDuration);
+        setTimeout(() => setShakePhase('stopping'), moveDuration - stopDuration);
         
         setTimeout(() => {
           liftMoveAudio.current.pause();
           setShakePhase('none');
-          setShowRevealedScene(true);
+          setState('stopped');
           
           liftStopOpenAudio.current.currentTime = 0;
           liftStopOpenAudio.current.play();
           
           setTimeout(() => {
-            setDoorsOpen(true);
+            setState('doors-opening');
             setTimeout(() => {
-              setArrowVisible(true);
+              setState('arrived');
             }, DOOR_ANIMATION_DURATION);
           }, DOOR_OPEN_DELAY);
         }, moveDuration);
@@ -115,8 +112,7 @@ export function ElevatorScene({ onSceneChange }: ElevatorSceneProps) {
   };
 
   const handleEnterScene = () => {
-    setIsReturning(false);
-    setIsZooming(true);
+    setState('entering');
     fadeOutAmbience(2000);
     setTimeout(() => {
       if (onSceneChange && currentFloor) {
@@ -132,7 +128,7 @@ export function ElevatorScene({ onSceneChange }: ElevatorSceneProps) {
 
   return (
     <>
-      {showRevealedScene && <RevealedScene backgroundUrl={revealedScene} isZooming={isZooming} isReturning={isReturning} entryPosition={entryPosition} />}
+      {showRevealedScene && <RevealedScene backgroundUrl={revealedScene} isZooming={isEntering} isReturning={isReturning} entryPosition={entryPosition} isHidden={isSceneHidden} />}
       
       <Scene 
         backgroundImage={elevatorBg}
@@ -140,11 +136,11 @@ export function ElevatorScene({ onSceneChange }: ElevatorSceneProps) {
         shakePhase={shakePhase}
         shakeBuildDuration={shakeDurations.build}
         shakeStopDuration={shakeDurations.stop}
-        isFadingOut={isZooming}
+        isFadingOut={isEntering}
         isReturning={isReturning}
       >
         <ElevatorDoors isOpen={doorsOpen} />
-        <EnterArrow visible={arrowVisible && !isZooming} onClick={handleEnterScene} />
+        <EnterArrow visible={arrowVisible} onClick={handleEnterScene} />
         <ElevatorContent onButtonsClick={() => setShowButtons(true)} />
       </Scene>
       

@@ -22,7 +22,7 @@ function InventorySlot({ item, index }: InventorySlotProps) {
   );
 }
 
-const MAX_SLOTS = 6;
+const MAX_SLOTS = 4;
 
 interface InventoryBarProps {
   visible?: boolean;

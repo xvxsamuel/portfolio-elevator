@@ -5,9 +5,10 @@ interface RevealedSceneProps {
   isZooming: boolean;
   isReturning?: boolean;
   entryPosition?: string;
+  isHidden?: boolean;
 }
 
-export function RevealedScene({ backgroundUrl, isZooming, isReturning = false, entryPosition = 'center' }: RevealedSceneProps) {
+export function RevealedScene({ backgroundUrl, isZooming, isReturning = false, entryPosition = 'center', isHidden = false }: RevealedSceneProps) {
   if (!backgroundUrl) return null;
   let bgPosition = entryPosition;
   if (isZooming) {
@@ -16,7 +17,7 @@ export function RevealedScene({ backgroundUrl, isZooming, isReturning = false, e
   
   return (
     <div 
-      className={`${styles.revealedScene} ${isZooming ? styles.revealedSceneZooming : ''} ${isReturning ? styles.revealedSceneReturning : ''}`}
+      className={`${styles.revealedScene} ${isZooming ? styles.revealedSceneZooming : ''} ${isReturning ? styles.revealedSceneReturning : ''} ${isHidden ? styles.revealedSceneHidden : ''}`}
       style={{ 
         backgroundImage: `url(${backgroundUrl})`,
         backgroundPosition: bgPosition,

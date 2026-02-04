@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useCallback, useMemo } from 'react';
 import type { ReactNode } from 'react';
 import type { SceneName, InventoryItem, GameContextType, DialogueData } from '../types/game';
-import { DEBUG_MODE } from '../config';
+
 
 const GameContext = createContext<GameContextType | null>(null);
 
@@ -17,19 +17,35 @@ interface GameProviderProps {
   children: ReactNode;
 }
 
+const getStoredValue = <T,>(key: string, defaultValue: T): T => {
+  const stored = localStorage.getItem(key);
+  if (stored === null) return defaultValue;
+  try {
+    return JSON.parse(stored) as T;
+  } catch {
+    return defaultValue;
+  }
+};
+
+const getInitialDebugMode = (): boolean => {
+  const envDebug = import.meta.env.VITE_DEBUG_MODE === 'true';
+  if (envDebug) return true;
+  return getStoredValue('debugMode', false);
+};
+
 export function GameProvider({ children }: GameProviderProps) {
   const [currentScene, setCurrentScene] = useState<SceneName>('loading');
   const [inventory, setInventory] = useState<InventoryItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [loadingProgress, setLoadingProgress] = useState(0);
-  const [parallaxEnabled, setParallaxEnabledState] = useState(true);
-  const [masterVolume, setMasterVolumeState] = useState(100);
+  const [parallaxEnabled, setParallaxEnabledState] = useState(() => getStoredValue('parallaxEnabled', true));
+  const [masterVolume, setMasterVolumeState] = useState(() => getStoredValue('masterVolume', 100));
   const [modalOpen, setModalOpenState] = useState(false);
   const [dialogue, setDialogue] = useState<DialogueData | null>(null);
   const [dialogueCount, setDialogueCount] = useState(0);
   const [playerName, setPlayerNameState] = useState('');
   const [currentFloor, setCurrentFloorState] = useState<number | null>(null);
-  const [debugMode, setDebugModeState] = useState(DEBUG_MODE);
+  const [debugMode, setDebugModeState] = useState(getInitialDebugMode);
 
   const setScene = useCallback((scene: SceneName) => {
     setCurrentScene(scene);
@@ -49,10 +65,12 @@ export function GameProvider({ children }: GameProviderProps) {
 
   const setParallaxEnabled = useCallback((enabled: boolean) => {
     setParallaxEnabledState(enabled);
+    localStorage.setItem('parallaxEnabled', JSON.stringify(enabled));
   }, []);
 
   const setMasterVolume = useCallback((volume: number) => {
     setMasterVolumeState(volume);
+    localStorage.setItem('masterVolume', JSON.stringify(volume));
   }, []);
 
   const setModalOpen = useCallback((open: boolean) => {
@@ -78,6 +96,7 @@ export function GameProvider({ children }: GameProviderProps) {
 
   const setDebugMode = useCallback((enabled: boolean) => {
     setDebugModeState(enabled);
+    localStorage.setItem('debugMode', JSON.stringify(enabled));
   }, []);
 
   const value: GameContextType = useMemo(() => ({
