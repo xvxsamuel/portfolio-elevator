@@ -4,11 +4,13 @@ import { Modal } from '../../components/ui/Modal';
 import { ButtonsPanel } from '../../components/ui/ButtonsPanel';
 import { useGame } from '../../context/GameProvider';
 import { useElevatorAudio } from './useElevatorAudio';
+import { useFloorTheme } from '../../hooks/useFloorTheme';
 import { ElevatorDoors } from './ElevatorDoors';
 import { ElevatorContent } from './ElevatorContent';
 import { RevealedScene } from './RevealedScene';
+import { FloorOverlays } from './FloorOverlays';
 import { EnterArrow } from './EnterArrow';
-import { FLOOR_SCENES, FLOOR_ENTRY_POSITIONS, REAL_FLOORS, MIN_MOVE_DURATION, MAX_MOVE_DURATION, DOOR_OPEN_DELAY, DOOR_ANIMATION_DURATION } from './constants';
+import { FLOOR_SCENES, FLOOR_ENTRY_OFFSETS, REAL_FLOORS, MIN_MOVE_DURATION, MAX_MOVE_DURATION, DOOR_OPEN_DELAY, DOOR_ANIMATION_DURATION } from './constants';
 import elevatorBg from '../../assets/images/interiors/elevator/main.png';
 import type { SceneName } from '../../types/game';
 
@@ -28,6 +30,7 @@ export function ElevatorScene({ onSceneChange }: ElevatorSceneProps) {
   const [shakeDurations, setShakeDurations] = useState({ build: 4, stop: 3 });
   
   const { liftButtonAudio, liftMoveAudio, liftStopOpenAudio, doorOpenAudio, fadeOutAmbience } = useElevatorAudio();
+  const { startDistant, fadeToFull, fadeToDistant, fadeOut: fadeOutTheme } = useFloorTheme();
 
   const doorsOpen = state === 'arrived' || state === 'entering' || state === 'returning' || state === 'doors-opening';
   const arrowVisible = state === 'arrived';
@@ -38,13 +41,14 @@ export function ElevatorScene({ onSceneChange }: ElevatorSceneProps) {
 
   useEffect(() => {
     if (state === 'returning') {
+      fadeToDistant();
       const timer = setTimeout(() => setState('arrived'), 2000);
       return () => clearTimeout(timer);
     }
-  }, [state]);
+  }, [state, fadeToDistant]);
 
   const revealedScene = currentFloor ? FLOOR_SCENES[currentFloor] : null;
-  const entryPosition = currentFloor ? FLOOR_ENTRY_POSITIONS[currentFloor] : 'center';
+  const entryOffset = currentFloor ? FLOOR_ENTRY_OFFSETS[currentFloor] : { x: 0, y: 0 };
 
   const handleFloorSelect = (floor: number, closesPanel: boolean) => {
     if (REAL_FLOORS.includes(floor)) {
@@ -60,6 +64,7 @@ export function ElevatorScene({ onSceneChange }: ElevatorSceneProps) {
         doorOpenAudio.current.currentTime = 0;
         doorOpenAudio.current.play();
         setState('closing-doors');
+        fadeOutTheme(DOOR_ANIMATION_DURATION);
       }
       
       const moveDuration = debugMode ? MIN_MOVE_DURATION : MIN_MOVE_DURATION + Math.random() * (MAX_MOVE_DURATION - MIN_MOVE_DURATION);
@@ -93,6 +98,7 @@ export function ElevatorScene({ onSceneChange }: ElevatorSceneProps) {
           
           setTimeout(() => {
             setState('doors-opening');
+            startDistant(floor);
             setTimeout(() => {
               setState('arrived');
             }, DOOR_ANIMATION_DURATION);
@@ -114,6 +120,7 @@ export function ElevatorScene({ onSceneChange }: ElevatorSceneProps) {
   const handleEnterScene = () => {
     setState('entering');
     fadeOutAmbience(2000);
+    fadeToFull();
     setTimeout(() => {
       if (onSceneChange && currentFloor) {
         onSceneChange(`floor-${currentFloor}` as SceneName);
@@ -128,7 +135,11 @@ export function ElevatorScene({ onSceneChange }: ElevatorSceneProps) {
 
   return (
     <>
-      {showRevealedScene && <RevealedScene backgroundUrl={revealedScene} isZooming={isEntering} isReturning={isReturning} entryPosition={entryPosition} isHidden={isSceneHidden} />}
+      {showRevealedScene && (
+        <RevealedScene backgroundUrl={revealedScene} isZooming={isEntering} isReturning={isReturning} entryOffset={entryOffset} isHidden={isSceneHidden}>
+          {currentFloor && <FloorOverlays floor={currentFloor} />}
+        </RevealedScene>
+      )}
       
       <Scene 
         backgroundImage={elevatorBg}

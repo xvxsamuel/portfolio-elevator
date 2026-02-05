@@ -1,5 +1,6 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useGame } from '../../context/GameProvider';
+import { TextButton } from './TextButton';
 import liftClickSound from '../../assets/audio/elevator/lift_click.mp3';
 import titleElevator from '../../assets/images/title/title_elevator.png';
 import styles from './TitleScreen.module.css';
@@ -15,6 +16,21 @@ export function TitleScreen({ isVisible, onStart }: TitleScreenProps) {
   const [isFadingOut, setIsFadingOut] = useState(false);
   const [isShaftFading, setIsShaftFading] = useState(false);
   const clickAudio = useRef(new Audio(liftClickSound));
+  const [isFullscreen, setIsFullscreen] = useState(!!document.fullscreenElement);
+
+  useEffect(() => {
+    const handleFullscreenChange = () => setIsFullscreen(!!document.fullscreenElement);
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
+  }, []);
+
+  const toggleFullscreen = () => {
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+    } else {
+      document.documentElement.requestFullscreen();
+    }
+  };
 
   const playClick = () => {
     clickAudio.current.volume = (masterVolume / 100) * 0.3;
@@ -49,7 +65,7 @@ export function TitleScreen({ isVisible, onStart }: TitleScreenProps) {
     <div className={`${styles.overlay} ${isFadingOut ? styles.fadeOut : ''}`}>
       <div className={styles.content}>
         <div className={styles.leftSection}>
-          <h1 className={styles.title}>The Elevator</h1>
+          <h1 className={styles.title}>The Elevator Pitch</h1>
           <div className={styles.menuContainer}>
             {!showOptions ? (
               <div className={styles.menu}>
@@ -64,12 +80,13 @@ export function TitleScreen({ isVisible, onStart }: TitleScreenProps) {
               <div className={styles.optionsPanel}>
                 <div className={styles.optionRow}>
                   <span className={styles.optionLabel}>Parallax Effect</span>
-                  <button 
-                    className={`${styles.toggle} ${parallaxEnabled ? styles.toggleOn : ''}`}
+                  <TextButton 
+                    variant="light"
+                    active={parallaxEnabled}
                     onClick={() => setParallaxEnabled(!parallaxEnabled)}
                   >
                     {parallaxEnabled ? 'ON' : 'OFF'}
-                  </button>
+                  </TextButton>
                 </div>
                 
                 <div className={styles.optionRow}>
@@ -86,13 +103,25 @@ export function TitleScreen({ isVisible, onStart }: TitleScreenProps) {
                 </div>
 
                 <div className={styles.optionRow}>
+                  <span className={styles.optionLabel}>Fullscreen</span>
+                  <TextButton 
+                    variant="light"
+                    active={isFullscreen}
+                    onClick={toggleFullscreen}
+                  >
+                    {isFullscreen ? 'ON' : 'OFF'}
+                  </TextButton>
+                </div>
+
+                <div className={styles.optionRow}>
                   <span className={styles.optionLabel}>Debug Mode</span>
-                  <button 
-                    className={`${styles.toggle} ${debugMode ? styles.toggleOn : ''}`}
+                  <TextButton 
+                    variant="light"
+                    active={debugMode}
                     onClick={() => setDebugMode(!debugMode)}
                   >
                     {debugMode ? 'ON' : 'OFF'}
-                  </button>
+                  </TextButton>
                 </div>
                 
                 <button 

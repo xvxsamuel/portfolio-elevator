@@ -6,6 +6,7 @@
   box-sizing: border-box;
   user-select: none;
   -webkit-user-drag: none;
+  font-family: 'Winky Sans', sans-serif;
 }
 
 img {

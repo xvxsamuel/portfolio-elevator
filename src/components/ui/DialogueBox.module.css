@@ -21,13 +21,16 @@
   bottom: 100px;
   left: 50%;
   transform: translateX(-50%);
-  width: 550px;
+  width: 620px;
   height: 140px;
   background: var(--color-surface);
   border: 2px solid var(--color-border);
   border-radius: 8px;
-  padding: 20px;
+  padding: 14px 20px;
   color: var(--color-text);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .speaker {
@@ -40,7 +43,7 @@
 .text {
   font-size: 1rem;
   line-height: 1.6;
-  margin-bottom: 10px;
+  flex: 1;
 }
 
 .continueHint {
@@ -48,6 +51,7 @@
   align-items: flex-end;
   justify-content: flex-end;
   gap: 6px;
+  margin-top: auto;
 }
 
 .continueText {

@@ -19,10 +19,6 @@
 }
 
 @keyframes flyOrganic {
-  /* Horizontal ellipse pattern - wider than tall */
-  /* Sprite faces left by default, so scaleX(-1) = facing right, scaleX(1) = facing left */
-  
-  /* Moving RIGHT - face right */
   0% {
     transform: translate(0, 0) scaleX(-1);
   }
@@ -35,11 +31,9 @@
   29.9% {
     transform: translate(42px, -8px) scaleX(-1);
   }
-  /* Instant flip to face left */
   30% {
     transform: translate(42px, -8px) scaleX(1);
   }
-  /* Moving LEFT - face left */
   40% {
     transform: translate(35px, 0px) scaleX(1);
   }
@@ -52,11 +46,9 @@
   69.9% {
     transform: translate(-25px, 4px) scaleX(1);
   }
-  /* Instant flip to face right */
   70% {
     transform: translate(-25px, 4px) scaleX(-1);
   }
-  /* Moving RIGHT - face right */
   80% {
     transform: translate(-30px, -4px) scaleX(-1);
   }

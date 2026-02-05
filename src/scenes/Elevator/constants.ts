@@ -10,15 +10,15 @@ export const FLOOR_SCENES: Record<number, string> = {
   8: samuelBg,
 };
 
-export const FLOOR_ENTRY_POSITIONS: Record<number, string> = {
-  1: '140% -80%',
-  4: '250% -78%',
-  5: 'center',
-  8: '115% -80%',
+export const FLOOR_ENTRY_OFFSETS: Record<number, { x: number; y: number }> = {
+  1: { x: -29, y: -13 },
+  4: { x: -21, y: -19 },
+  5: { x: 0, y: 0 },
+  8: { x: -7, y: -19 },
 };
 
 export const REAL_FLOORS = [1, 4, 5, 8];
 export const MIN_MOVE_DURATION = 6000;
 export const MAX_MOVE_DURATION = 14000;
 export const DOOR_OPEN_DELAY = 1500;
-export const DOOR_ANIMATION_DURATION = 2000;
+export const DOOR_ANIMATION_DURATION = 2500;

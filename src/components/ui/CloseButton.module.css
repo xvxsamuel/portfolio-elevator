@@ -1,0 +1,23 @@
+.closeButton {
+  background: var(--color-surface-dark);
+  border: 1px solid var(--color-border-strong);
+  color: var(--color-text);
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 6px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease;
+}
+
+.closeButton:hover {
+  background: var(--color-surface);
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+}

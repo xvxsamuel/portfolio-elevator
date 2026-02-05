@@ -4,6 +4,7 @@ import { GameProvider, useGame } from './context/GameProvider';
 import { GameContainer } from './components/GameContainer';
 import { InventoryBar } from './components/ui/InventoryBar';
 import { LoadingScreen } from './components/ui/LoadingScreen';
+import { FullscreenPrompt } from './components/ui/FullscreenPrompt';
 import { TitleScreen } from './components/ui/TitleScreen';
 import { DialogueBox } from './components/ui/DialogueBox';
 import { NameInputModal } from './components/ui/NameInputModal';
@@ -19,6 +20,7 @@ type IntroStep = 'where' | 'remember' | 'name-input' | 'final' | 'done';
 function GameContent() {
   const { currentScene, isLoading, setLoading, setLoadingProgress, setScene, modalOpen, dialogue, dialogueCount, showDialogue, dismissDialogue, setPlayerName, debugMode } = useGame();
   const { progress, isLoaded } = usePreloader();
+  const [showFullscreenPrompt, setShowFullscreenPrompt] = useState(false);
   const [showTitleScreen, setShowTitleScreen] = useState(false);
   const [introStep, setIntroStep] = useState<IntroStep | null>(null);
   const introStarted = useRef(false);
@@ -37,13 +39,24 @@ function GameContent() {
 
   useEffect(() => {
     if (isLoaded && isLoading) {
-      // Loading complete, show title screen
+      const hasSeenPrompt = localStorage.getItem('fullscreenPromptShown') === 'true';
       setTimeout(() => {
         setLoading(false);
-        setShowTitleScreen(true);
+        if (hasSeenPrompt && !debugMode) {
+          setShowTitleScreen(true);
+        } else {
+          setShowFullscreenPrompt(true);
+        }
       }, 300);
     }
-  }, [isLoaded, isLoading, setLoading]);
+  }, [isLoaded, isLoading, setLoading, debugMode]);
+
+  const handleFullscreenPromptComplete = () => {
+    setShowFullscreenPrompt(false);
+    setTimeout(() => {
+      setShowTitleScreen(true);
+    }, 100);
+  };
 
   const [fadeFromBlack, setFadeFromBlack] = useState(false);
 
@@ -110,6 +123,15 @@ function GameContent() {
     <GameContainer sceneContent={isInGame && renderScene}>
       <AnimatePresence mode="wait">
         {isLoading && <LoadingScreen progress={progress} isVisible={true} />}
+      </AnimatePresence>
+
+      <AnimatePresence mode="wait">
+        {showFullscreenPrompt && (
+          <FullscreenPrompt 
+            isVisible={true} 
+            onComplete={handleFullscreenPromptComplete} 
+          />
+        )}
       </AnimatePresence>
       
       <AnimatePresence mode="wait">

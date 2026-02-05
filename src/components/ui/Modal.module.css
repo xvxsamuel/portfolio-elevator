@@ -14,6 +14,11 @@
   opacity: 0;
 }
 
+.noParallax {
+  position: fixed;
+  z-index: 1000;
+}
+
 .content {
   cursor: default;
 }
