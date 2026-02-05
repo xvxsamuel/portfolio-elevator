@@ -30,7 +30,7 @@ export function MartinaHotspots() {
       />
       
       <Hotspot
-        x={45} y={81} width={3.3} height={4.5}
+        x={45} y={81.5} width={3.3} height={4.5}
         dialogue="How do I skip this ad?"
         label="Remote"
       />
@@ -64,23 +64,23 @@ export function MartinaHotspots() {
       )}
 
       <Hotspot
-        x={36} y={37} width={12} height={25}
+        x={76.2} y={32} width={14.6} height={30}
         onClick={openWebsite}
         label="TV"
       />
 
       <Hotspot
-        x={20.5} y={36} width={6} height={12}
+        x={4.1} y={31.5} width={17.7} height={20}
         onClick={openUx}
         label="Poster with little people"
       />
 
       <Hotspot
-        x={51} y={64} width={4} height={7}
+        x={45} y={73.9} width={8.8} height={7.5}
         onClick={openMagazine}
         label="Magazine"
       />
-
+      
       {modals}
     </>
   );

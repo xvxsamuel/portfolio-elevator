@@ -48,9 +48,15 @@ export function LauraScene({ onBack }: LauraSceneProps) {
         videoId="F4knMdLnT5k"
       >
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor 
-          incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
-          exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+          For this project, I explored video editing and motion graphics to create a commercial for Body
+          Planet, a gym focused on wellbeing, community, and personalized experiences. I conducted
+          research on fitness and non-fitness campaigns to understand how successful brands
+          communicate values through rhythm, sound, and visual storytelling. Using Adobe Premiere Pro
+          and After Effects, I combined copyright free footage with UI animations, kinetic typography, and
+          motion design to highlight both the gym's atmosphere and its digital features. I developed a
+          storyboard and shot list to structure the narrative, guiding the viewer through an emotional arc
+          from chaos to calm. Throughout the process, I iteratively tested visual direction, pacing, and
+          sound to ensure coherence and engagement.
         </p>
       </PortfolioModal>
     </Scene>
