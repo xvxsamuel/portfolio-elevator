@@ -44,7 +44,7 @@ export function LauraScene({ onBack }: LauraSceneProps) {
       <PortfolioModal
         isOpen={videoOpen}
         onClose={handleVideoClose}
-        title="Laura's Showreel"
+        title="Video Editing and Motion Graphics: Body Planet Commercial"
         videoId="F4knMdLnT5k"
       >
         <p>
