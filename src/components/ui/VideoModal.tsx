@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useGame } from '../../context/GameProvider';
+import { CloseButton } from './CloseButton';
 import styles from './VideoModal.module.css';
 
 export interface VideoModalProps {
@@ -52,21 +53,15 @@ export function VideoModal({
         {title && (
           <div className={styles.header}>
             <h2 className={styles.title}>{title}</h2>
-            <button className={styles.closeButton} onClick={onClose} aria-label="Close">
-              ×
-            </button>
+            <CloseButton onClick={onClose} className={styles.closeButton} />
           </div>
         )}
         
         {!title && (
-          <button 
-            className={styles.closeButton} 
-            onClick={onClose} 
-            aria-label="Close"
-            style={{ position: 'absolute', top: '-50px', right: 0 }}
-          >
-            ×
-          </button>
+          <CloseButton 
+            onClick={onClose}
+            className={styles.closeButtonAbsolute}
+          />
         )}
         
         <div className={styles.videoWrapper}>

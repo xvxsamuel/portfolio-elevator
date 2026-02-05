@@ -48,7 +48,7 @@ export function LauraHotspots({ onLaptopClick }: LauraHotspotsProps) {
       />
 
       <Hotspot
-        x={0} y={0} width={10} height={10}
+        x={60} y={80.5} width={11} height={10}
         onClick={onLaptopClick}
         label="Laptop"
       />

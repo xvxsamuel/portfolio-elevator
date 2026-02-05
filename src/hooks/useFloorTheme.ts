@@ -17,11 +17,13 @@ const FULL_VOLUME = 0.10;
 const DISTANT_VOLUME = 0.04;
 const DOOR_FADE_DURATION = 2500;
 const TRANSITION_FADE_DURATION = 2000;
+const MUTE_FADE_DURATION = 1000;
 const FADE_STEPS = 40;
 
 let activeAudio: HTMLAudioElement | null = null;
 let activeFadeInterval: number | null = null;
 let activeFloor: number | null = null;
+let volumeBeforeMute: number | null = null;
 
 export function useFloorTheme() {
   const { masterVolume } = useGame();
@@ -116,12 +118,26 @@ export function useFloorTheme() {
     activeAudio.volume = isDistant ? getVolume(DISTANT_VOLUME) : getVolume(FULL_VOLUME);
   }, [getVolume]);
 
+  const muteTemporarily = useCallback(() => {
+    if (!activeAudio) return;
+    volumeBeforeMute = activeAudio.volume;
+    fadeTo(0, MUTE_FADE_DURATION);
+  }, [fadeTo]);
+
+  const restoreFromMute = useCallback(() => {
+    if (!activeAudio || volumeBeforeMute === null) return;
+    fadeTo(volumeBeforeMute, MUTE_FADE_DURATION);
+    volumeBeforeMute = null;
+  }, [fadeTo]);
+
   return {
     startDistant,
     fadeToFull,
     fadeToDistant,
     fadeOut,
     updateVolume,
+    muteTemporarily,
+    restoreFromMute,
     currentFloor: activeFloor,
   };
 }

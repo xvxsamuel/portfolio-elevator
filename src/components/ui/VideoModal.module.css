@@ -54,21 +54,23 @@
 
 .closeButton {
   background: rgba(255, 255, 255, 0.1);
-  border: none;
-  color: var(--color-text);
-  font-size: 1.5rem;
-  cursor: pointer;
-  padding: 0.5rem;
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.2s ease, transform 0.2s ease;
 }
 
 .closeButton:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
+.closeButtonAbsolute {
+  position: absolute;
+  top: -50px;
+  right: 0;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+}
+
+.closeButtonAbsolute:hover {
   background: rgba(255, 255, 255, 0.2);
   transform: scale(1.1);
 }
