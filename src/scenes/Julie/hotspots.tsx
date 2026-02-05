@@ -1,12 +1,11 @@
-import { useState } from 'react';
 import { Hotspot } from '../../components/ui/Hotspot';
-import { ExternalLinkModal } from '../../components/ui/ExternalLinkModal';
 import { useInventory } from '../../hooks/useInventory';
+import { useJuliePortfolios } from './portfolio';
 import cupSound from '../../assets/audio/martina/cup.mp3';
 
 export function JulieHotspots() {
   const { hasItem, addItem } = useInventory();
-  const [pcModalOpen, setPcModalOpen] = useState(false);
+  const { openComputer, openMagazine, openPoster, modals } = useJuliePortfolios();
 
   return (
     <>
@@ -52,15 +51,23 @@ export function JulieHotspots() {
 
       <Hotspot
         x={45.6} y={41.5} width={10} height={14}
-        onClick={() => setPcModalOpen(true)}
+        onClick={openComputer}
         label="Computer"
       />
 
-      <ExternalLinkModal
-        isOpen={pcModalOpen}
-        onClose={() => setPcModalOpen(false)}
-        url="https://www.figma.com/proto/wIzoF2HnPDkdZ6m79xexOp/Final-Juliette?node-id=0-1&t=nzwRmgMgRqj5ovww-1"
+      <Hotspot
+        x={50} y={50} width={8} height={10}
+        onClick={openMagazine}
+        label="Magazine"
       />
+
+      <Hotspot
+        x={30} y={30} width={10} height={15}
+        onClick={openPoster}
+        label="Poster"
+      />
+
+      {modals}
     </>
   );
 }

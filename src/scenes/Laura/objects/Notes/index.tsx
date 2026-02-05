@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import note1 from '../../../../assets/images/interiors/laura/note1.png';
-import note2 from '../../../../assets/images/interiors/laura/Music note 2.png';
-import note3 from '../../../../assets/images/interiors/laura/Music note 3.png';
-import note4 from '../../../../assets/images/interiors/laura/Music note 4.png';
-import note5 from '../../../../assets/images/interiors/laura/Music note 5.png';
+import note2 from '../../../../assets/images/interiors/laura/note2.png';
+import note3 from '../../../../assets/images/interiors/laura/note3.png';
+import note4 from '../../../../assets/images/interiors/laura/note4.png';
+import note5 from '../../../../assets/images/interiors/laura/note5.png';
 
 const notes = [note1, note2, note3, note4, note5];
 

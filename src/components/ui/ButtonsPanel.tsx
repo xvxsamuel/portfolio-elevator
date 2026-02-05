@@ -13,6 +13,7 @@ import styles from './ButtonsPanel.module.css';
 
 interface ButtonsPanelProps {
   onButtonClick: (floor: number, closesPanel: boolean) => void;
+  disabled?: boolean;
 }
 
 const meowAudio = new Audio(meowSound);
@@ -29,7 +30,7 @@ const buttons = [
   { id: 8, src: button8, x: 67.81, y: 81.25, closesPanel: true, extraSound: null },
 ];
 
-export function ButtonsPanel({ onButtonClick }: ButtonsPanelProps) {
+export function ButtonsPanel({ onButtonClick, disabled = false }: ButtonsPanelProps) {
   const handleClick = (btn: typeof buttons[0]) => {
     liftClickAudio.currentTime = 0;
     liftClickAudio.play();
@@ -37,6 +38,7 @@ export function ButtonsPanel({ onButtonClick }: ButtonsPanelProps) {
       btn.extraSound.currentTime = 0;
       btn.extraSound.play();
     }
+    if (disabled) return;
     onButtonClick(btn.id, btn.closesPanel);
   };
 

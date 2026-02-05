@@ -9,14 +9,14 @@ export function Steam() {
           <filter id="steam-distortion">
             <feTurbulence
               type="turbulence"
-              baseFrequency="0.015 0.02"
+              baseFrequency="0.008 0.012"
               numOctaves="3"
               seed="5"
               result="turbulence"
             >
               <animate
                 attributeName="baseFrequency"
-                values="0.015 0.02;0.02 0.025;0.015 0.02"
+                values="0.008 0.012;0.015 0.02;0.008 0.012"
                 dur="4s"
                 repeatCount="indefinite"
               />
@@ -24,17 +24,14 @@ export function Steam() {
             <feDisplacementMap
               in="SourceGraphic"
               in2="turbulence"
-              scale="8"
+              scale="10"
               xChannelSelector="R"
               yChannelSelector="G"
             />
           </filter>
         </defs>
       </svg>
-      <div
-        className={styles.steam}
-        style={{ backgroundImage: `url(${steamImg})` }}
-      />
+      <img src={steamImg} alt="" className={styles.steam} />
     </>
   );
 }

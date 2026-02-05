@@ -7,6 +7,8 @@ import { ClockLines } from '../Julie/objects/ClockLines/index';
 import { Urn } from '../Julie/objects/Urn/index';
 import { Cat } from '../Samuel/objects/Cat/index';
 import { Mask } from '../Samuel/objects/Mask/index';
+import { Fish } from '../Samuel/objects/Fish/index';
+import { RecordPlayer } from '../Samuel/objects/RecordPlayer/index';
 import { Notes } from '../Laura/objects/Notes/index';
 import { Steam as LauraSteam } from '../Laura/objects/Steam/index';
 
@@ -32,6 +34,8 @@ export function FloorOverlays({ floor }: FloorOverlaysProps) {
       <>
         <Cat />
         {!hasItem('mask') && <Mask />}
+        <Fish isAnimating={false} />
+        <RecordPlayer isOpen={false} />
       </>
     );
   }

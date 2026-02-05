@@ -23,7 +23,7 @@ export const ITEMS: Record<ItemId, InventoryItem> = {
     id: 'polaroid',
     name: 'Distressing Polaroid',
     icon: polaroidIcon,
-    description: 'Friendly guy.',
+    description: 'Must have been the wind.',
   },
   mask: {
     id: 'mask',

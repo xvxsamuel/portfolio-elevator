@@ -18,7 +18,7 @@ export function MartinaScene({ onBack }: MartinaSceneProps) {
   }, []);
 
   return (
-    <Scene className="martina-scene" backgroundImage={martinaBg} entryPoint="right">
+    <Scene className="martina-scene" backgroundImage={martinaBg}>
       <FloorOverlays floor={1} />
       <MartinaHotspots />
 

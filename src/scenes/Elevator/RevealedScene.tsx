@@ -5,12 +5,11 @@ interface RevealedSceneProps {
   backgroundUrl: string | null;
   isZooming: boolean;
   isReturning?: boolean;
-  entryOffset?: { x: number; y: number };
   isHidden?: boolean;
   children?: ReactNode;
 }
 
-export function RevealedScene({ backgroundUrl, isZooming, isReturning = false, entryOffset = { x: 0, y: 0 }, isHidden = false, children }: RevealedSceneProps) {
+export function RevealedScene({ backgroundUrl, isZooming, isReturning = false, isHidden = false, children }: RevealedSceneProps) {
   if (!backgroundUrl) return null;
 
   const containerClasses = [
@@ -28,13 +27,7 @@ export function RevealedScene({ backgroundUrl, isZooming, isReturning = false, e
   
   return (
     <div className={containerClasses}>
-      <div 
-        className={innerClasses} 
-        style={{ 
-          '--initial-x': `${entryOffset.x}%`,
-          '--initial-y': `${entryOffset.y}%`,
-        } as React.CSSProperties}
-      >
+      <div className={innerClasses}>
         <img src={backgroundUrl} alt="" className={styles.revealedSceneBg} />
         {children}
       </div>

@@ -10,7 +10,7 @@ import { ElevatorContent } from './ElevatorContent';
 import { RevealedScene } from './RevealedScene';
 import { FloorOverlays } from './FloorOverlays';
 import { EnterArrow } from './EnterArrow';
-import { FLOOR_SCENES, FLOOR_ENTRY_OFFSETS, REAL_FLOORS, MIN_MOVE_DURATION, MAX_MOVE_DURATION, DOOR_OPEN_DELAY, DOOR_ANIMATION_DURATION } from './constants';
+import { FLOOR_SCENES, REAL_FLOORS, MIN_MOVE_DURATION, MAX_MOVE_DURATION, DOOR_OPEN_DELAY, DOOR_ANIMATION_DURATION } from './constants';
 import elevatorBg from '../../assets/images/interiors/elevator/main.png';
 import type { SceneName } from '../../types/game';
 
@@ -26,6 +26,7 @@ export function ElevatorScene({ onSceneChange }: ElevatorSceneProps) {
   const [state, setState] = useState<ElevatorState>(currentFloor !== null ? 'returning' : 'idle');
   const [showButtons, setShowButtons] = useState(false);
   const [isFading, setIsFading] = useState(false);
+  const [isNavigating, setIsNavigating] = useState(false);
   const [shakePhase, setShakePhase] = useState<'none' | 'building' | 'full' | 'stopping'>('none');
   const [shakeDurations, setShakeDurations] = useState({ build: 4, stop: 3 });
   
@@ -48,10 +49,10 @@ export function ElevatorScene({ onSceneChange }: ElevatorSceneProps) {
   }, [state, fadeToDistant]);
 
   const revealedScene = currentFloor ? FLOOR_SCENES[currentFloor] : null;
-  const entryOffset = currentFloor ? FLOOR_ENTRY_OFFSETS[currentFloor] : { x: 0, y: 0 };
 
   const handleFloorSelect = (floor: number, closesPanel: boolean) => {
     if (REAL_FLOORS.includes(floor)) {
+      setIsNavigating(true);
       liftButtonAudio.current.currentTime = 0;
       liftButtonAudio.current.play();
       
@@ -101,6 +102,7 @@ export function ElevatorScene({ onSceneChange }: ElevatorSceneProps) {
             startDistant(floor);
             setTimeout(() => {
               setState('arrived');
+              setIsNavigating(false);
             }, DOOR_ANIMATION_DURATION);
           }, DOOR_OPEN_DELAY);
         }, moveDuration);
@@ -136,7 +138,7 @@ export function ElevatorScene({ onSceneChange }: ElevatorSceneProps) {
   return (
     <>
       {showRevealedScene && (
-        <RevealedScene backgroundUrl={revealedScene} isZooming={isEntering} isReturning={isReturning} entryOffset={entryOffset} isHidden={isSceneHidden}>
+        <RevealedScene backgroundUrl={revealedScene} isZooming={isEntering} isReturning={isReturning} isHidden={isSceneHidden}>
           {currentFloor && <FloorOverlays floor={currentFloor} />}
         </RevealedScene>
       )}
@@ -156,7 +158,7 @@ export function ElevatorScene({ onSceneChange }: ElevatorSceneProps) {
       </Scene>
       
       <Modal isOpen={showButtons} onClose={handleClose} isFading={isFading}>
-        <ButtonsPanel onButtonClick={handleFloorSelect} />
+        <ButtonsPanel onButtonClick={handleFloorSelect} disabled={isNavigating} />
       </Modal>
     </>
   );

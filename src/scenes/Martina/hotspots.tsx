@@ -4,6 +4,7 @@ import { useMartinaPortfolios } from './portfolio';
 import meowSound from '../../assets/audio/elevator/meow.mp3';
 import birdSound from '../../assets/audio/martina/bird.mp3';
 import cupSound from '../../assets/audio/martina/cup.mp3';
+import horsingAround from '../../assets/audio/martina/neigh.mp3';
 
 export function MartinaHotspots() {
   const { hasItem, addItem } = useInventory();
@@ -14,6 +15,7 @@ export function MartinaHotspots() {
       <Hotspot
         x={77} y={0} width={11.2} height={28.5}
         dialogue="What a lovely whorse."
+        sound={horsingAround}
         label="Horse painting"
       />
       

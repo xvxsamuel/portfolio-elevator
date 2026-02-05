@@ -2,15 +2,19 @@ import { useState, useRef } from 'react';
 import { Hotspot } from '../../components/ui/Hotspot';
 import { ExternalLinkModal } from '../../components/ui/ExternalLinkModal';
 import { useInventory } from '../../hooks/useInventory';
+import { useGame } from '../../context/GameProvider';
 import { Fish } from './objects/Fish';
 import { RecordPlayer } from './objects/RecordPlayer';
+import meowSound from '../../assets/audio/elevator/meow.mp3';
 
 export function SamuelHotspots() {
   const { hasItem, addItem } = useInventory();
+  const { showDialogue, playerName, masterVolume } = useGame();
   const [recordPlayerOpen, setRecordPlayerOpen] = useState(false);
   const [fishAnimating, setFishAnimating] = useState(false);
   const [laptopModalOpen, setLaptopModalOpen] = useState(false);
   const fishTimeoutRef = useRef<number | null>(null);
+  const meowAudioRef = useRef<HTMLAudioElement | null>(null);
 
   const handleFishClick = () => {
     if (fishTimeoutRef.current) {
@@ -27,27 +31,41 @@ export function SamuelHotspots() {
     setRecordPlayerOpen(prev => !prev);
   };
 
+  const handleCatClick = () => {
+    showDialogue("Oh, hey there little guy. Where's your owner?", playerName, () => {
+      if (!meowAudioRef.current) {
+        meowAudioRef.current = new Audio(meowSound);
+      }
+      meowAudioRef.current.volume = masterVolume / 100;
+      meowAudioRef.current.currentTime = 0;
+      meowAudioRef.current.play();
+
+      setTimeout(() => {
+        showDialogue("Mhm. I see.", playerName);
+      }, 1500);
+    });
+  };
+
   return (
     <>
       <Fish isAnimating={fishAnimating} />
       <RecordPlayer isOpen={recordPlayerOpen} />
 
       <Hotspot
-        x={0} y={30} width={15} height={40}
+        x={7.2} y={22} width={13} height={17}
         onClick={handleFishClick}
-        label="Fish tank"
+        label="Fish"
       />
 
       <Hotspot
-        x={72} y={55} width={12} height={20}
+        x={12.3} y={59.5} width={12} height={8}
         onClick={handleRecordPlayerClick}
-        dialogue="Ooh, that's my jam!"
         label="Record player"
       />
 
       {!hasItem('mask') && (
         <Hotspot
-          x={33} y={12} width={8} height={18}
+          x={29.8} y={26.3} width={5.6} height={14.2}
           onDialogueComplete={() => addItem('mask')}
           dialogue="An ancient shaman mask. Looks powerful... and cursed."
           label="Shaman mask"
@@ -55,25 +73,25 @@ export function SamuelHotspots() {
       )}
 
       <Hotspot
-        x={57} y={10} width={15} height={25}
-        dialogue="Records from the golden era. Nice collection."
+        x={9.2} y={67.5} width={7} height={5}
+        dialogue="Bladee...? Who listens to this shit?"
         label="Records"
       />
 
       <Hotspot
-        x={45} y={70} width={10} height={20}
-        dialogue="Oh, hey there little guy. Where's your owner? *meow* Mhm. I see."
+        x={21} y={73.5} width={13} height={11.3}
+        onClick={handleCatClick}
         label="Cat"
       />
 
       <Hotspot
-        x={20} y={25} width={10} height={25}
+        x={50.5} y={39} width={10.5} height={14.5}
         dialogue="Do they like gaslighting or being the one gaslighted?"
         label="Shirt"
       />
 
       <Hotspot
-        x={85} y={30} width={10} height={50}
+        x={68.6} y={24.8} width={2.2} height={48}
         dialogue="It's locked."
         label="Door"
       />
@@ -93,7 +111,7 @@ export function SamuelHotspots() {
       <ExternalLinkModal
         isOpen={laptopModalOpen}
         onClose={() => setLaptopModalOpen(false)}
-        url="https://example.com"
+        url="https://arampig.lol/"
       />
     </>
   );

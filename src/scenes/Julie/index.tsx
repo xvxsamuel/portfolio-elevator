@@ -18,7 +18,7 @@ export function JulieScene({ onBack }: JulieSceneProps) {
   }, []);
 
   return (
-    <Scene className="julie-scene" backgroundImage={julieBg} entryPoint="right">
+    <Scene className="julie-scene" backgroundImage={julieBg}>
       <FloorOverlays floor={4} />
       <JulieHotspots />
       {onBack && (

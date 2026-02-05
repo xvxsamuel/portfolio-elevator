@@ -18,7 +18,7 @@ export function SamuelScene({ onBack }: SamuelSceneProps) {
   }, []);
 
   return (
-    <Scene className="samuel-scene" backgroundImage={samuelBg} entryPoint="right">
+    <Scene className="samuel-scene" backgroundImage={samuelBg}>
       <FloorOverlays floor={2} />
       <SamuelHotspots />
 
@@ -26,8 +26,8 @@ export function SamuelScene({ onBack }: SamuelSceneProps) {
         <BackArrow 
           onClick={onBack}
           visible={arrowVisible}
-          style={{ bottom: '5%', left: '80%', transform: 'translateX(-50%) perspective(200px) rotateX(-60deg)' }}
-          rotation={{ z: 1 }}
+          style={{ bottom: '5%', left: '73%', transform: 'translateX(-50%) perspective(200px) rotateX(-60deg)' }}
+          rotation={{ z: 5 }}
         />
       )}
     </Scene>

@@ -1,15 +1,5 @@
-import { useState, useEffect, type ReactNode, type CSSProperties } from 'react';
+import { type ReactNode, type CSSProperties } from 'react';
 import styles from './Scene.module.css';
-
-export type EntryPoint = 'center' | 'left' | 'right' | 'top' | 'bottom';
-
-const ENTRY_POSITIONS: Record<EntryPoint, string> = {
-  center: 'center',
-  left: '30% center',
-  right: '70% center',
-  top: 'center 30%',
-  bottom: 'center 70%',
-};
 
 interface SceneProps {
   className?: string;
@@ -21,7 +11,6 @@ interface SceneProps {
   isBlurred?: boolean;
   isFadingOut?: boolean;
   isReturning?: boolean;
-  entryPoint?: EntryPoint;
 }
 
 export function Scene({ 
@@ -34,17 +23,7 @@ export function Scene({
   isBlurred = false,
   isFadingOut = false,
   isReturning = false,
-  entryPoint = 'center',
 }: SceneProps) {
-  const [isEntering, setIsEntering] = useState(entryPoint !== 'center');
-
-  useEffect(() => {
-    if (entryPoint !== 'center') {
-      const timer = setTimeout(() => setIsEntering(false), 50);
-      return () => clearTimeout(timer);
-    }
-  }, [entryPoint]);
-
   const sceneClasses = [
     styles.scene,
     isBlurred && styles.blurred,
@@ -54,7 +33,6 @@ export function Scene({
     shakePhase === 'full' && styles.shakeFull,
     shakePhase === 'stopping' && styles.shakeStopping,
     shakePhase !== 'none' && styles.shaking,
-    entryPoint !== 'center' && styles.hasEntryAnimation,
     className,
   ].filter(Boolean).join(' ');
 
@@ -63,17 +41,12 @@ export function Scene({
     '--shake-stop-duration': `${shakeStopDuration}s`,
   } as CSSProperties;
 
-  const backgroundPosition = isEntering ? ENTRY_POSITIONS[entryPoint] : 'center';
-
   return (
     <div className={sceneClasses}>
       <div className={styles.content} style={contentStyle}>
         <div 
           className={styles.background} 
-          style={{ 
-            backgroundImage: `url(${backgroundImage})`,
-            backgroundPosition,
-          }}
+          style={{ backgroundImage: `url(${backgroundImage})` }}
         />
         {children}
       </div>
