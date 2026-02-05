@@ -30,7 +30,7 @@ export function LauraHotspots({ onLaptopClick }: LauraHotspotsProps) {
       />
 
       <Hotspot
-        x={0} y={0} width={10} height={10}
+        x={0} y={57.3} width={24.4} height={31.7}
         dialogue="That explains a lot."
         label="Pizza blanket"
       />

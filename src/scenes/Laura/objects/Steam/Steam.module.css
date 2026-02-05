@@ -9,21 +9,14 @@
   pointer-events: none;
   z-index: 3;
   opacity: 0.8;
-  animation: swirl 3s ease-in-out infinite;
-  transform-origin: center center;
+  animation: wave 2s ease-in-out infinite;
 }
 
-@keyframes swirl {
+@keyframes wave {
   0%, 100% {
-    transform: scale(1) rotate(0deg);
-  }
-  25% {
-    transform: scale(1.02) rotate(1deg);
+    transform: translateX(0);
   }
   50% {
-    transform: scale(1) rotate(0deg);
-  }
-  75% {
-    transform: scale(0.98) rotate(-1deg);
+    transform: translateX(0.5%);
   }
 }
