@@ -50,19 +50,19 @@ export function JulieHotspots() {
       )}
 
       <Hotspot
-        x={45.6} y={41.5} width={10} height={14}
+        x={45.6} y={41.5} width={10} height={13}
         onClick={openComputer}
         label="Computer"
       />
 
       <Hotspot
-        x={50} y={50} width={8} height={10}
+        x={45.4} y={54.5} width={4.4} height={3}
         onClick={openMagazine}
         label="Magazine"
       />
 
       <Hotspot
-        x={30} y={30} width={10} height={15}
+        x={51} y={9.3} width={8.7} height={17.3}
         onClick={openPoster}
         label="Poster"
       />

@@ -14,7 +14,7 @@ const FLOOR_THEMES: Record<number, string> = {
 };
 
 const FULL_VOLUME = 0.10;
-const DISTANT_VOLUME = 0.04;
+const DISTANT_VOLUME = 0.02;
 const DOOR_FADE_DURATION = 2500;
 const TRANSITION_FADE_DURATION = 2000;
 const MUTE_FADE_DURATION = 1000;
