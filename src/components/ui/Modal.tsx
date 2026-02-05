@@ -14,9 +14,9 @@ export function Modal({ isOpen, onClose, children, isFading = false, noParallax 
   const { setModalOpen } = useGame();
 
   useEffect(() => {
-    setModalOpen(isOpen);
+    setModalOpen(isOpen && !isFading);
     return () => setModalOpen(false);
-  }, [isOpen, setModalOpen]);
+  }, [isOpen, isFading, setModalOpen]);
 
   if (!isOpen) return null;
 
