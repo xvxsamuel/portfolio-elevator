@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 import { useGame } from '../context/GameProvider';
-import { ITEMS, ItemId } from '../data/items';
+import type { ItemId } from '../data/items';
+import { ITEMS } from '../data/items';
 
 export function useInventory() {
   const { inventory, addToInventory, removeFromInventory } = useGame();

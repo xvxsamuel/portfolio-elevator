@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Scene } from '../../components/Scene';
 import { BackArrow } from '../../components/ui/BackArrow';
-import { VideoModal } from '../../components/ui/VideoModal';
+import { PortfolioModal } from '../../components/ui/PortfolioModal';
 import { LauraHotspots } from './hotspots';
 import { useFloorTheme } from '../../hooks/useFloorTheme';
 import lauraBg from '../../assets/images/interiors/laura/main.png';
@@ -41,11 +41,18 @@ export function LauraScene({ onBack }: LauraSceneProps) {
           rotation={{ z: -10 }}
         />
       )}
-      <VideoModal
+      <PortfolioModal
         isOpen={videoOpen}
         onClose={handleVideoClose}
+        title="Laura's Showreel"
         videoId="F4knMdLnT5k"
-      />
+      >
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor 
+          incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
+          exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        </p>
+      </PortfolioModal>
     </Scene>
   );
 }

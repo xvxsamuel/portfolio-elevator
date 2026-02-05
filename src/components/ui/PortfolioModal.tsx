@@ -14,16 +14,22 @@ export interface PortfolioModalProps {
   isOpen: boolean;
   onClose: () => void;
   title: string;
-  images: PortfolioImage[];
+  images?: PortfolioImage[];
+  videoId?: string;
   children: ReactNode;
   noParallax?: boolean;
+}
+
+function getYouTubeEmbedUrl(videoId: string): string {
+  return `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
 }
 
 export function PortfolioModal({ 
   isOpen, 
   onClose, 
   title, 
-  images, 
+  images = [],
+  videoId,
   children,
   noParallax = true
 }: PortfolioModalProps) {
@@ -87,7 +93,18 @@ export function PortfolioModal({
         </div>
         
         <div className={styles.scrollContent}>
-          {images.length > 0 && (
+          {videoId && (
+            <div className={styles.videoWrapper}>
+              <iframe
+                src={getYouTubeEmbedUrl(videoId)}
+                title={title}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
+          )}
+
+          {!videoId && images.length > 0 && (
             <>
               <div className={styles.carousel} ref={emblaRef}>
                 <div className={styles.carouselContainer}>
