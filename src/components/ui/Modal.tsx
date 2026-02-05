@@ -1,4 +1,5 @@
 import { type ReactNode, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useGame } from '../../context/GameProvider';
 import styles from './Modal.module.css';
 
@@ -7,10 +8,9 @@ interface ModalProps {
   onClose: () => void;
   children: ReactNode;
   isFading?: boolean;
-  noParallax?: boolean;
 }
 
-export function Modal({ isOpen, onClose, children, isFading = false, noParallax = false }: ModalProps) {
+export function Modal({ isOpen, onClose, children, isFading = false }: ModalProps) {
   const { setModalOpen } = useGame();
 
   useEffect(() => {
@@ -23,14 +23,14 @@ export function Modal({ isOpen, onClose, children, isFading = false, noParallax 
   const overlayClasses = [
     styles.overlay,
     isFading && styles.fading,
-    noParallax && styles.noParallax
   ].filter(Boolean).join(' ');
 
-  return (
+  return createPortal(
     <div className={overlayClasses} onClick={onClose}>
       <div className={styles.content} onClick={e => e.stopPropagation()}>
         {children}
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

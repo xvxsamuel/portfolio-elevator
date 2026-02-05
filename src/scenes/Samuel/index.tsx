@@ -19,7 +19,7 @@ export function SamuelScene({ onBack }: SamuelSceneProps) {
 
   return (
     <Scene className="samuel-scene" backgroundImage={samuelBg}>
-      <FloorOverlays floor={2} />
+      <FloorOverlays floor={8} />
       <SamuelHotspots />
 
       {onBack && (

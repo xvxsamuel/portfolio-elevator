@@ -97,13 +97,13 @@ export function SamuelHotspots() {
       />
 
       <Hotspot
-        x={50} y={5} width={8} height={15}
-        dialogue="I wouldn't want that blade down above my bed."
+        x={39} y={20.5} width={6.7} height={16.5}
+        dialogue="I wouldn't want that blade above my bed."
         label="Figurine"
       />
 
       <Hotspot
-        x={62} y={50} width={8} height={12}
+        x={49.4} y={53.6} width={10.5} height={11.5}
         onClick={() => setLaptopModalOpen(true)}
         label="Laptop"
       />

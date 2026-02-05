@@ -15,7 +15,7 @@ export function ExternalLinkModal({ isOpen, onClose, url }: ExternalLinkModalPro
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} noParallax>
+    <Modal isOpen={isOpen} onClose={onClose}>
       <div className={styles.container}>
         <p className={styles.message}>
           A new tab will open to view this project.
