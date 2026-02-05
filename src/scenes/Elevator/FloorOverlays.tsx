@@ -29,7 +29,7 @@ export function FloorOverlays({ floor }: FloorOverlaysProps) {
     );
   }
 
-  if (floor === 2) {
+  if (floor === 8) {
     return (
       <>
         <Cat />

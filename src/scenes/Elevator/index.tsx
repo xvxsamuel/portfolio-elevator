@@ -145,7 +145,6 @@ export function ElevatorScene({ onSceneChange }: ElevatorSceneProps) {
       
       <Scene 
         backgroundImage={elevatorBg}
-        isBlurred={showButtons && !isFading}
         shakePhase={shakePhase}
         shakeBuildDuration={shakeDurations.build}
         shakeStopDuration={shakeDurations.stop}

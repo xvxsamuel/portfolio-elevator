@@ -1,4 +1,5 @@
 import { type ReactNode, type CSSProperties } from 'react';
+import { useGame } from '../context/GameProvider';
 import styles from './Scene.module.css';
 
 interface SceneProps {
@@ -24,9 +25,11 @@ export function Scene({
   isFadingOut = false,
   isReturning = false,
 }: SceneProps) {
+  const { modalOpen } = useGame();
+  
   const sceneClasses = [
     styles.scene,
-    isBlurred && styles.blurred,
+    (isBlurred || modalOpen) && styles.blurred,
     isFadingOut && styles.fadingOut,
     isReturning && styles.returning,
     shakePhase === 'building' && styles.shakeBuilding,
