@@ -57,7 +57,7 @@ export function MartinaHotspots() {
       {!hasItem('rosary') && (
         <Hotspot
           x={67} y={53} width={4} height={8}
-          onClick={() => addItem('rosary')}
+          onDialogueComplete={() => addItem('rosary')}
           dialogue="Nice necklace. I hope no one minds I took it."
           label="Rosary"
         />

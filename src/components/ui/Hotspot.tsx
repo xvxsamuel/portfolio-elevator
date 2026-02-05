@@ -12,9 +12,10 @@ interface HotspotProps {
   speaker?: string;
   sound?: string;
   label?: string;
+  onDialogueComplete?: () => void;
 }
 
-export function Hotspot({ x, y, width, height, onClick, dialogue, speaker, sound, label }: HotspotProps) {
+export function Hotspot({ x, y, width, height, onClick, dialogue, speaker, sound, label, onDialogueComplete }: HotspotProps) {
   const { showDialogue, playerName, masterVolume, debugMode } = useGame();
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -29,7 +30,9 @@ export function Hotspot({ x, y, width, height, onClick, dialogue, speaker, sound
     }
     
     if (dialogue) {
-      showDialogue(dialogue, speaker || playerName);
+      showDialogue(dialogue, speaker || playerName, onDialogueComplete);
+    } else {
+      onDialogueComplete?.();
     }
     
     onClick?.();

@@ -48,7 +48,7 @@ export function SamuelHotspots() {
       {!hasItem('mask') && (
         <Hotspot
           x={33} y={12} width={8} height={18}
-          onClick={() => addItem('mask')}
+          onDialogueComplete={() => addItem('mask')}
           dialogue="An ancient shaman mask. Looks powerful... and cursed."
           label="Shaman mask"
         />

@@ -11,7 +11,7 @@ interface LauraSceneProps {
 
 export function LauraScene({ onBack }: LauraSceneProps) {
   const [arrowVisible, setArrowVisible] = useState(false);
-  const { openShowreel, modals } = useLauraPortfolios();
+  const { openShowreel, openPolaroid, openFitness, openMagazine, modals } = useLauraPortfolios();
 
   useEffect(() => {
     const timer = setTimeout(() => setArrowVisible(true), 500);
@@ -20,7 +20,12 @@ export function LauraScene({ onBack }: LauraSceneProps) {
 
   return (
     <Scene className="laura-scene" backgroundImage={lauraBg}>
-      <LauraHotspots onLaptopClick={openShowreel} />
+      <LauraHotspots 
+        onLaptopClick={openShowreel} 
+        onCameraClick={openPolaroid}
+        onFitnessClick={openFitness}
+        onMagazineClick={openMagazine}
+      />
       {onBack && (
         <BackArrow 
           onClick={onBack}

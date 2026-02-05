@@ -1,7 +1,8 @@
-import { useEffect, useCallback, useState, type ReactNode } from 'react';
+import { useEffect, useCallback, useState, useRef, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import useEmblaCarousel from 'embla-carousel-react';
 import { useGame } from '../../context/GameProvider';
+import { useFloorTheme } from '../../hooks/useFloorTheme';
 import { CloseButton } from './CloseButton';
 import styles from './PortfolioModal.module.css';
 
@@ -16,6 +17,8 @@ export interface PortfolioModalProps {
   title: string;
   images?: PortfolioImage[];
   videoId?: string;
+  externalLink?: string;
+  linkLabel?: string;
   children: ReactNode;
   noParallax?: boolean;
 }
@@ -30,14 +33,18 @@ export function PortfolioModal({
   title, 
   images = [],
   videoId,
+  externalLink,
+  linkLabel,
   children,
   noParallax = true
 }: PortfolioModalProps) {
   const { setModalOpen } = useGame();
+  const { muteTemporarily, restoreFromMute } = useFloorTheme();
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [canScrollPrev, setCanScrollPrev] = useState(false);
   const [canScrollNext, setCanScrollNext] = useState(false);
+  const wasMutedRef = useRef(false);
 
   const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
   const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
@@ -65,6 +72,17 @@ export function PortfolioModal({
     setModalOpen(isOpen);
     return () => setModalOpen(false);
   }, [isOpen, setModalOpen]);
+
+  useEffect(() => {
+    if (videoId && isOpen && !wasMutedRef.current) {
+      muteTemporarily();
+      wasMutedRef.current = true;
+    }
+    if (!isOpen && wasMutedRef.current) {
+      restoreFromMute();
+      wasMutedRef.current = false;
+    }
+  }, [isOpen, videoId, muteTemporarily, restoreFromMute]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -156,9 +174,20 @@ export function PortfolioModal({
             </>
           )}
           
-          <div className={styles.description}>
+          <div className={`${styles.description} ${(videoId || images.length > 0) ? styles.hasMediaAbove : ''}`}>
             {children}
           </div>
+
+          {externalLink && (
+            <a
+              href={externalLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.externalLinkButton}
+            >
+              Click here to view {linkLabel || 'link'} <span className={styles.linkChevron}>›</span>
+            </a>
+          )}
         </div>
       </div>
     </div>

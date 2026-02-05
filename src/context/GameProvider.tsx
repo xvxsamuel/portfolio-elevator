@@ -77,13 +77,16 @@ export function GameProvider({ children }: GameProviderProps) {
     setModalOpenState(open);
   }, []);
 
-  const showDialogueFunc = useCallback((text: string, speaker?: string) => {
-    setDialogue({ text, speaker });
+  const showDialogueFunc = useCallback((text: string, speaker?: string, onComplete?: () => void) => {
+    setDialogue({ text, speaker, onComplete });
     setDialogueCount(prev => prev + 1);
   }, []);
 
   const dismissDialogue = useCallback(() => {
-    setDialogue(null);
+    setDialogue(prev => {
+      prev?.onComplete?.();
+      return null;
+    });
   }, []);
 
   const setPlayerName = useCallback((name: string) => {

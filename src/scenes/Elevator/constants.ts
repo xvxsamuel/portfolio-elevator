@@ -13,7 +13,7 @@ export const FLOOR_SCENES: Record<number, string> = {
 export const FLOOR_ENTRY_OFFSETS: Record<number, { x: number; y: number }> = {
   1: { x: -29, y: -13 },
   4: { x: -21, y: -19 },
-  5: { x: 0, y: 0 },
+  5: { x: 10, y: -10 },
   8: { x: -7, y: -19 },
 };
 

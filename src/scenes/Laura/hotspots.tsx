@@ -6,10 +6,13 @@ import cupSound from '../../assets/audio/martina/cup.mp3';
 
 interface LauraHotspotsProps {
   onLaptopClick?: () => void;
+  onCameraClick?: () => void;
+  onFitnessClick?: () => void;
+  onMagazineClick?: () => void;
 }
 
-export function LauraHotspots({ onLaptopClick }: LauraHotspotsProps) {
-  const { hasItem, addItem } = useInventory();
+export function LauraHotspots({ onLaptopClick, onCameraClick, onFitnessClick, onMagazineClick }: LauraHotspotsProps) {
+  const { hasItem } = useInventory();
 
   return (
     <>
@@ -17,14 +20,14 @@ export function LauraHotspots({ onLaptopClick }: LauraHotspotsProps) {
       <Steam />
 
       <Hotspot
-        x={0} y={0} width={10} height={10}
+        x={27} y={50.5} width={2.8} height={5}
         dialogue="Ah, the mug has opinions.. Interesting choice of morning affirmation."
         sound={cupSound}
         label="Coffee mug"
       />
 
       <Hotspot
-        x={0} y={0} width={10} height={10}
+        x={73} y={59.2} width={13.2} height={18.5}
         dialogue="Wow, that's an impressive commitment to cardboard."
         label="Shoe boxes"
       />
@@ -42,7 +45,7 @@ export function LauraHotspots({ onLaptopClick }: LauraHotspotsProps) {
       />
 
       <Hotspot
-        x={0} y={0} width={10} height={10}
+        x={58} y={21.8} width={10.9} height={19}
         dialogue="This has definitely witnessed things..."
         label="Octopus"
       />
@@ -55,12 +58,23 @@ export function LauraHotspots({ onLaptopClick }: LauraHotspotsProps) {
 
       {!hasItem('polaroid') && (
         <Hotspot
-          x={0} y={0} width={10} height={10}
-          onClick={() => addItem('polaroid')}
-          dialogue="A camera... and what's this? A polaroid slips out."
+          x={70.5} y={29.5} width={3.5} height={5}
+          onClick={onCameraClick}
           label="Camera"
         />
       )}
+
+      <Hotspot
+        x={79} y={8} width={9.8} height={51}
+        onClick={onFitnessClick}
+        label="Fitness posters"
+      />
+
+      <Hotspot
+        x={14.8} y={20.2} width={9.6} height={21.6}
+        onClick={onMagazineClick}
+        label="Magazine poster"
+      />
     </>
   );
 }

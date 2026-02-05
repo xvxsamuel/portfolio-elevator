@@ -25,6 +25,7 @@ export interface GameSettings {
 export interface DialogueData {
   text: string;
   speaker?: string;
+  onComplete?: () => void;
 }
 
 export interface GameState {
@@ -51,7 +52,7 @@ export interface GameContextType extends GameState {
   setParallaxEnabled: (enabled: boolean) => void;
   setMasterVolume: (volume: number) => void;
   setModalOpen: (open: boolean) => void;
-  showDialogue: (text: string, speaker?: string) => void;
+  showDialogue: (text: string, speaker?: string, onComplete?: () => void) => void;
   dismissDialogue: () => void;
   setPlayerName: (name: string) => void;
   setCurrentFloor: (floor: number | null) => void;

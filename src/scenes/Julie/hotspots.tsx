@@ -44,7 +44,7 @@ export function JulieHotspots() {
       {!hasItem('urn') && (
         <Hotspot
           x={83} y={51.4} width={2.3} height={5.3}
-          onClick={() => addItem('urn')}
+          onDialogueComplete={() => addItem('urn')}
           dialogue="This urn is still empty, but at some point it will not be. All in due time, we ought not to be impatient."
           label="Urn"
         />

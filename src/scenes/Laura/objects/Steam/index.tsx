@@ -3,9 +3,38 @@ import styles from './Steam.module.css';
 
 export function Steam() {
   return (
-    <div
-      className={styles.steam}
-      style={{ backgroundImage: `url(${steamImg})` }}
-    />
+    <>
+      <svg className={styles.filterDefs}>
+        <defs>
+          <filter id="steam-distortion">
+            <feTurbulence
+              type="turbulence"
+              baseFrequency="0.015 0.02"
+              numOctaves="3"
+              seed="5"
+              result="turbulence"
+            >
+              <animate
+                attributeName="baseFrequency"
+                values="0.015 0.02;0.02 0.025;0.015 0.02"
+                dur="4s"
+                repeatCount="indefinite"
+              />
+            </feTurbulence>
+            <feDisplacementMap
+              in="SourceGraphic"
+              in2="turbulence"
+              scale="8"
+              xChannelSelector="R"
+              yChannelSelector="G"
+            />
+          </filter>
+        </defs>
+      </svg>
+      <div
+        className={styles.steam}
+        style={{ backgroundImage: `url(${steamImg})` }}
+      />
+    </>
   );
 }
