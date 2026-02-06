@@ -1,5 +1,5 @@
 import { Modal } from './Modal';
-import { Button } from './Button';
+import { TextButton } from './TextButton';
 import styles from './ExternalLinkModal.module.css';
 
 interface ExternalLinkModalProps {
@@ -16,13 +16,13 @@ export function ExternalLinkModal({ isOpen, onClose, url }: ExternalLinkModalPro
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-      <div className={styles.container}>
+      <div className={styles.container} onClick={e => e.stopPropagation()}>
         <p className={styles.message}>
           A new tab will open to view this project.
         </p>
         <div className={styles.buttons}>
-          <Button onClick={onClose}>Cancel</Button>
-          <Button onClick={handleContinue}>Continue</Button>
+          <TextButton onClick={onClose}>Cancel</TextButton>
+          <TextButton onClick={handleContinue}>Continue</TextButton>
         </div>
       </div>
     </Modal>

@@ -24,6 +24,13 @@
   width: 106%;
   height: 106%;
   z-index: 1;
+  will-change: transform;
+  transition: filter 0.3s ease;
+}
+
+.blurred {
+  filter: blur(8px);
+  pointer-events: none;
 }
 
 @media (max-aspect-ratio: 16/9) {

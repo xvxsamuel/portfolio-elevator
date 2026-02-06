@@ -1,6 +1,9 @@
 import { Hotspot } from '../../components/ui/Hotspot';
 import { useInventory } from '../../hooks/useInventory';
 import { useJuliePortfolios } from './portfolio';
+import { Steam } from './objects/Steam';
+import { ClockLines } from './objects/ClockLines';
+import { Urn } from './objects/Urn';
 import cupSound from '../../assets/audio/martina/cup.mp3';
 
 export function JulieHotspots() {
@@ -9,6 +12,10 @@ export function JulieHotspots() {
 
   return (
     <>
+      <Steam />
+      <ClockLines />
+      {!hasItem('urn') && <Urn />}
+
       <Hotspot
         x={47.3} y={80} width={15.7} height={20}
         dialogue="This is a yarn basket: it exists for listening to gruesome murder mystery documentaries because it itches that part of the brain where death and comfort inevitably intersect."
@@ -23,7 +30,7 @@ export function JulieHotspots() {
 
       <Hotspot
         x={85.35} y={48.2} width={5.8} height={10}
-        dialogue="Why did you click on this, you already know it is a basket containing yarn."
+        dialogue="Why did you click on this? You already know it is a basket containing yarn."
         label="Other yarn basket"
       />
 

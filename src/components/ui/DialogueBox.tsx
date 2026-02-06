@@ -1,3 +1,4 @@
+import { ChevronRight } from './icons';
 import styles from './DialogueBox.module.css';
 
 interface DialogueBoxProps {
@@ -19,7 +20,7 @@ export function DialogueBox({ text, speaker, onComplete, isVisible, isFirst = fa
         <div className={styles.text}>{text}</div>
         <div className={styles.continueHint}>
           {isFirst && <span className={styles.continueText}>Click to continue</span>}
-          <span className={styles.chevron}>›</span>
+          <ChevronRight className={styles.chevron} />
         </div>
       </div>
     </div>

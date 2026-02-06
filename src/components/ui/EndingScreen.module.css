@@ -1,0 +1,94 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 2s ease;
+}
+
+.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.theEndText {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 10vw, 8rem);
+  color: #1a1a1a;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  opacity: 0;
+  animation: fadeInText 3s ease forwards;
+  animation-delay: 1s;
+}
+
+.returnButton {
+  margin-top: 3rem;
+  padding: 1rem 2rem;
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 2vw, 1.5rem);
+  color: #666;
+  background: none;
+  border: 2px solid #ccc;
+  cursor: pointer;
+  opacity: 0;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.returnButton.showButton {
+  animation: fadeInButton 2s ease forwards;
+}
+
+.returnButton:hover {
+  color: #1a1a1a;
+  border-color: #1a1a1a;
+}
+
+@keyframes fadeInText {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInButton {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.fadingOut {
+  animation: fadeToBlack 1.5s ease forwards;
+}
+
+.fadingOut .theEndText,
+.fadingOut .returnButton {
+  animation: fadeOutContent 0.8s ease forwards;
+}
+
+@keyframes fadeToBlack {
+  to {
+    background: black;
+  }
+}
+
+@keyframes fadeOutContent {
+  to {
+    opacity: 0;
+  }
+}

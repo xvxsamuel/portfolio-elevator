@@ -27,7 +27,7 @@ export function Modal({ isOpen, onClose, children, isFading = false }: ModalProp
 
   return createPortal(
     <div className={overlayClasses} onClick={onClose}>
-      <div className={styles.content} onClick={e => e.stopPropagation()}>
+      <div className={styles.content}>
         {children}
       </div>
     </div>,

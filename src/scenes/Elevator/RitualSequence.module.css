@@ -1,0 +1,189 @@
+.darkOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  z-index: 15;
+  pointer-events: none;
+  transition: opacity 1.5s ease;
+}
+
+.darkOverlayVisible {
+  opacity: 1;
+}
+
+.raccoonEyes {
+  position: absolute;
+  z-index: 16;
+  pointer-events: none;
+  display: flex;
+  gap: 0.17vw;
+}
+
+.raccoonEye {
+  width: 0.2vw;
+  height: 0.2vw;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 0, 0, 1) 0%, rgba(200, 0, 0, 0.8) 50%, rgba(100, 0, 0, 0.4) 100%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.raccoonEyeGlowing {
+  opacity: 1;
+  animation: eyeGlow 1.5s ease-in-out infinite;
+}
+
+@keyframes eyeGlow {
+  0%, 100% {
+    box-shadow: 0 0 1px 1px rgba(255, 0, 0, 0.8), 0 0 2px 2px rgba(255, 0, 0, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 2px 2px rgba(255, 0, 0, 1), 0 0 4px 3px rgba(255, 0, 0, 0.6);
+  }
+}
+
+.ritualOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ritualCircle {
+  position: absolute;
+  width: 250px;
+  height: 250px;
+  opacity: 0;
+  transform: rotate(0deg);
+  transition: opacity 1.5s ease;
+  filter: drop-shadow(0 0 15px rgba(200, 0, 0, 0.8)) drop-shadow(0 0 30px rgba(200, 0, 0, 0.5));
+}
+
+.ritualCircleVisible {
+  opacity: 1;
+  animation: circleGlow 2s ease-in-out infinite;
+}
+
+.ritualCircleSpinning {
+  animation: circleSpinSlow 10s linear infinite, circleGlow 2s ease-in-out infinite;
+}
+
+.ritualCircleSpinningFast {
+  animation: circleSpinFast 1.5s linear infinite, circleGlowIntense 0.5s ease-in-out infinite;
+}
+
+@keyframes circleSpinSlow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes circleSpinFast {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes circleGlow {
+  0%, 100% {
+    filter: drop-shadow(0 0 15px rgba(200, 0, 0, 0.8)) drop-shadow(0 0 30px rgba(200, 0, 0, 0.5));
+  }
+  50% {
+    filter: drop-shadow(0 0 25px rgba(255, 0, 0, 1)) drop-shadow(0 0 50px rgba(255, 0, 0, 0.7));
+  }
+}
+
+@keyframes circleGlowIntense {
+  0%, 100% {
+    filter: drop-shadow(0 0 30px rgba(255, 0, 0, 1)) drop-shadow(0 0 60px rgba(255, 0, 0, 0.8));
+  }
+  50% {
+    filter: drop-shadow(0 0 50px rgba(255, 255, 255, 1)) drop-shadow(0 0 100px rgba(255, 0, 0, 1));
+  }
+}
+
+.ritualItem {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  opacity: 0;
+  transform: scale(0.5);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ritualItemTop {
+  top: calc(50% - 170px);
+  left: calc(50% - 24px);
+}
+
+.ritualItemRight {
+  top: calc(50% - 24px);
+  left: calc(50% + 120px);
+}
+
+.ritualItemBottom {
+  top: calc(50% + 120px);
+  left: calc(50% - 24px);
+}
+
+.ritualItemLeft {
+  top: calc(50% - 24px);
+  left: calc(50% - 170px);
+}
+
+.ritualItemVisible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.ritualItemImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  animation: itemGlow 1.5s ease-in-out infinite;
+}
+
+@keyframes itemGlow {
+  0%, 100% {
+    filter: drop-shadow(0 0 8px rgba(200, 0, 0, 0.8)) drop-shadow(0 0 16px rgba(200, 0, 0, 0.5));
+  }
+  50% {
+    filter: drop-shadow(0 0 12px rgba(255, 0, 0, 1)) drop-shadow(0 0 24px rgba(255, 0, 0, 0.7));
+  }
+}
+
+.whiteFlash {
+  position: fixed;
+  inset: 0;
+  background: white;
+  opacity: 0;
+  z-index: 9999;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.whiteFlashVisible {
+  opacity: 1;
+}
+
+.whiteFlashFading {
+  transition: opacity 5s ease-out;
+  opacity: 0;
+}
+
+.inventoryGlowIcon {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 5px rgba(200, 0, 0, 0.8)) drop-shadow(0 0 10px rgba(200, 0, 0, 0.5));
+}

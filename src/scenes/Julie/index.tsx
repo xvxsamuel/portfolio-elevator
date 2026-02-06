@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Scene } from '../../components/Scene';
-import { BackArrow } from '../../components/ui/BackArrow';
-import { FloorOverlays } from '../Elevator/FloorOverlays';
+import { Arrow } from '../../components/ui/Arrow';
 import { JulieHotspots } from './hotspots';
 import julieBg from '../../assets/images/interiors/julie/main.png';
 
@@ -19,13 +18,14 @@ export function JulieScene({ onBack }: JulieSceneProps) {
 
   return (
     <Scene className="julie-scene" backgroundImage={julieBg}>
-      <FloorOverlays floor={4} />
       <JulieHotspots />
       {onBack && (
-        <BackArrow 
+        <Arrow 
           onClick={onBack}
           visible={arrowVisible}
-          style={{ bottom: '5%', left: '90%', transform: 'translateX(-50%) perspective(200px) rotateX(-60deg)' }}
+          pulse
+          perspective
+          style={{ bottom: '5%', left: '90%', transform: 'translateX(-50%) perspective(200px) rotateX(-60deg) scale(1.5)' }}
           rotation={{ z: -20 }}
         />
       )}

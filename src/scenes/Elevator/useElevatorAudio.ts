@@ -1,5 +1,6 @@
 import { useRef, useEffect, useCallback } from 'react';
 import { useGame } from '../../context/GameProvider';
+import { getPreloadedAudio } from '../../hooks/usePreloader';
 import liftButtonSound from '../../assets/audio/elevator/lift_ button.mp3';
 import liftMoveSound from '../../assets/audio/elevator/lift_move.mp3';
 import liftStopAndOpenSound from '../../assets/audio/elevator/lift_stop_and_open.mp3';
@@ -8,16 +9,22 @@ import elevatorAmbienceSound from '../../assets/audio/elevator/elevator_ambience
 import flySound from '../../assets/audio/elevator/fly.mp3';
 
 export function useElevatorAudio() {
-  const { masterVolume } = useGame();
+  const { masterVolume, registerAudio, unregisterAudio } = useGame();
   
-  const liftButtonAudio = useRef(new Audio(liftButtonSound));
-  const liftMoveAudio = useRef(new Audio(liftMoveSound));
-  const liftStopOpenAudio = useRef(new Audio(liftStopAndOpenSound));
-  const doorOpenAudio = useRef(new Audio(doorOpenSound));
-  const elevatorAmbienceAudio = useRef(new Audio(elevatorAmbienceSound));
-  const flyAudio = useRef(new Audio(flySound));
+  const liftButtonAudio = useRef(getPreloadedAudio(liftButtonSound));
+  const liftMoveAudio = useRef(getPreloadedAudio(liftMoveSound));
+  const liftStopOpenAudio = useRef(getPreloadedAudio(liftStopAndOpenSound));
+  const doorOpenAudio = useRef(getPreloadedAudio(doorOpenSound));
+  const elevatorAmbienceAudio = useRef(getPreloadedAudio(elevatorAmbienceSound));
+  const flyAudio = useRef(getPreloadedAudio(flySound));
   const fadeIntervalRef = useRef<number | null>(null);
   const isFadingOut = useRef(false);
+  const flyPausedRef = useRef(false);
+  const flyTimeoutRef = useRef<number>(0);
+  const flyFadeInRef = useRef<number>(0);
+  const flyFadeOutRef = useRef<number>(0);
+  const flyHoldRef = useRef<number>(0);
+  const scheduleFlyRef = useRef<(() => void) | null>(null);
 
   useEffect(() => {
     if (isFadingOut.current) return;
@@ -36,40 +43,53 @@ export function useElevatorAudio() {
     
     ambience.loop = true;
     ambience.volume = 0.85 * volumeMultiplier;
+    registerAudio(ambience);
     ambience.play();
     
     fly.loop = true;
     fly.volume = 0;
+    registerAudio(fly);
     fly.play();
     
-    let flyTimeout: number;
-    let fadeInInterval: number;
-    let fadeOutInterval: number;
-    let holdTimeout: number;
-    
     const scheduleFlyPassBy = () => {
+      if (flyPausedRef.current) return;
       const delay = 15000 + Math.random() * 30000;
-      flyTimeout = window.setTimeout(() => {
+      flyTimeoutRef.current = window.setTimeout(() => {
+        if (flyPausedRef.current) return;
         const peakVolume = 0.025 * (masterVolume / 100);
         const fadeTime = 500; 
         const holdDuration = 500 + Math.random() * 2500; 
         const fadeSteps = 20;
         let step = 0;
         
-        fadeInInterval = window.setInterval(() => {
+        flyFadeInRef.current = window.setInterval(() => {
+          if (flyPausedRef.current) {
+            clearInterval(flyFadeInRef.current);
+            fly.volume = 0;
+            return;
+          }
           step++;
           fly.volume = (step / fadeSteps) * peakVolume;
           if (step >= fadeSteps) {
-            clearInterval(fadeInInterval);
+            clearInterval(flyFadeInRef.current);
             fly.volume = peakVolume;
             
-            holdTimeout = window.setTimeout(() => {
+            flyHoldRef.current = window.setTimeout(() => {
+              if (flyPausedRef.current) {
+                fly.volume = 0;
+                return;
+              }
               step = 0;
-              fadeOutInterval = window.setInterval(() => {
+              flyFadeOutRef.current = window.setInterval(() => {
+                if (flyPausedRef.current) {
+                  clearInterval(flyFadeOutRef.current);
+                  fly.volume = 0;
+                  return;
+                }
                 step++;
                 fly.volume = peakVolume * (1 - step / fadeSteps);
                 if (step >= fadeSteps) {
-                  clearInterval(fadeOutInterval);
+                  clearInterval(flyFadeOutRef.current);
                   fly.volume = 0;
                   scheduleFlyPassBy();
                 }
@@ -79,22 +99,39 @@ export function useElevatorAudio() {
         }, fadeTime / fadeSteps);
       }, delay);
     };
-  
+
+    scheduleFlyRef.current = scheduleFlyPassBy;
     scheduleFlyPassBy();
     
     return () => {
       liftMoveAudio.current.pause();
       liftStopOpenAudio.current.pause();
+      unregisterAudio(ambience);
+      unregisterAudio(fly);
       ambience.pause();
       fly.pause();
-      clearTimeout(flyTimeout);
-      clearTimeout(holdTimeout);
-      clearInterval(fadeInInterval);
-      clearInterval(fadeOutInterval);
+      clearTimeout(flyTimeoutRef.current);
+      clearTimeout(flyHoldRef.current);
+      clearInterval(flyFadeInRef.current);
+      clearInterval(flyFadeOutRef.current);
       if (fadeIntervalRef.current) {
         clearInterval(fadeIntervalRef.current);
       }
     };
+  }, [registerAudio, unregisterAudio]);
+
+  const pauseFly = useCallback(() => {
+    flyPausedRef.current = true;
+    clearTimeout(flyTimeoutRef.current);
+    clearTimeout(flyHoldRef.current);
+    clearInterval(flyFadeInRef.current);
+    clearInterval(flyFadeOutRef.current);
+    flyAudio.current.volume = 0;
+  }, []);
+
+  const resumeFly = useCallback(() => {
+    flyPausedRef.current = false;
+    scheduleFlyRef.current?.();
   }, []);
 
   const fadeOutAmbience = useCallback((duration: number = 2000) => {
@@ -134,5 +171,7 @@ export function useElevatorAudio() {
     liftStopOpenAudio,
     doorOpenAudio,
     fadeOutAmbience,
+    pauseFly,
+    resumeFly,
   };
 }

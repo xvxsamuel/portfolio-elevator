@@ -1,26 +1,35 @@
 import { useState, useRef } from 'react';
 import { Hotspot } from '../../components/ui/Hotspot';
-import { ExternalLinkModal } from '../../components/ui/ExternalLinkModal';
 import { useInventory } from '../../hooks/useInventory';
 import { useGame } from '../../context/GameProvider';
+import { getPreloadedAudio } from '../../hooks/usePreloader';
+import { Cat } from './objects/Cat';
+import { Mask } from './objects/Mask';
 import { Fish } from './objects/Fish';
 import { RecordPlayer } from './objects/RecordPlayer';
+import { useSamuelPortfolios } from './portfolio';
 import meowSound from '../../assets/audio/elevator/meow.mp3';
+import fishSound from '../../assets/audio/samuel/fish.mp3';
 
 export function SamuelHotspots() {
   const { hasItem, addItem } = useInventory();
   const { showDialogue, playerName, masterVolume } = useGame();
+  const { openPortfolio, modals } = useSamuelPortfolios();
   const [recordPlayerOpen, setRecordPlayerOpen] = useState(false);
   const [fishAnimating, setFishAnimating] = useState(false);
-  const [laptopModalOpen, setLaptopModalOpen] = useState(false);
   const fishTimeoutRef = useRef<number | null>(null);
-  const meowAudioRef = useRef<HTMLAudioElement | null>(null);
 
   const handleFishClick = () => {
     if (fishTimeoutRef.current) {
       clearTimeout(fishTimeoutRef.current);
     }
     setFishAnimating(true);
+    
+    const fishAudio = getPreloadedAudio(fishSound);
+    fishAudio.volume = masterVolume / 100;
+    fishAudio.currentTime = 0;
+    fishAudio.play();
+    
     fishTimeoutRef.current = window.setTimeout(() => {
       setFishAnimating(false);
       fishTimeoutRef.current = null;
@@ -33,12 +42,10 @@ export function SamuelHotspots() {
 
   const handleCatClick = () => {
     showDialogue("Oh, hey there little guy. Where's your owner?", playerName, () => {
-      if (!meowAudioRef.current) {
-        meowAudioRef.current = new Audio(meowSound);
-      }
-      meowAudioRef.current.volume = masterVolume / 100;
-      meowAudioRef.current.currentTime = 0;
-      meowAudioRef.current.play();
+      const meowAudio = getPreloadedAudio(meowSound);
+      meowAudio.volume = masterVolume / 100;
+      meowAudio.currentTime = 0;
+      meowAudio.play();
 
       setTimeout(() => {
         showDialogue("Mhm. I see.", playerName);
@@ -48,6 +55,8 @@ export function SamuelHotspots() {
 
   return (
     <>
+      <Cat />
+      {!hasItem('mask') && <Mask />}
       <Fish isAnimating={fishAnimating} />
       <RecordPlayer isOpen={recordPlayerOpen} />
 
@@ -67,14 +76,14 @@ export function SamuelHotspots() {
         <Hotspot
           x={29.8} y={26.3} width={5.6} height={14.2}
           onDialogueComplete={() => addItem('mask')}
-          dialogue="An ancient shaman mask. Looks powerful... and cursed."
+          dialogue="Ooh, an ancient shaman mask! My favorite!"
           label="Shaman mask"
         />
       )}
 
       <Hotspot
         x={9.2} y={67.5} width={7} height={5}
-        dialogue="Bladee...? Who listens to this shit?"
+        dialogue="Bladee..? Who listens to this shit?"
         label="Records"
       />
 
@@ -104,15 +113,11 @@ export function SamuelHotspots() {
 
       <Hotspot
         x={49.4} y={53.6} width={10.5} height={11.5}
-        onClick={() => setLaptopModalOpen(true)}
+        onClick={openPortfolio}
         label="Laptop"
       />
 
-      <ExternalLinkModal
-        isOpen={laptopModalOpen}
-        onClose={() => setLaptopModalOpen(false)}
-        url="https://arampig.lol/"
-      />
+      {modals}
     </>
   );
 }

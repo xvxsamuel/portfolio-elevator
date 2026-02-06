@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Scene } from '../../components/Scene';
-import { BackArrow } from '../../components/ui/BackArrow';
-import { FloorOverlays } from '../Elevator/FloorOverlays';
+import { Arrow } from '../../components/ui/Arrow';
 import { SamuelHotspots } from './hotspots';
 import samuelBg from '../../assets/images/interiors/samuel/main.png';
 
@@ -19,14 +18,15 @@ export function SamuelScene({ onBack }: SamuelSceneProps) {
 
   return (
     <Scene className="samuel-scene" backgroundImage={samuelBg}>
-      <FloorOverlays floor={8} />
       <SamuelHotspots />
 
       {onBack && (
-        <BackArrow 
+        <Arrow 
           onClick={onBack}
           visible={arrowVisible}
-          style={{ bottom: '5%', left: '73%', transform: 'translateX(-50%) perspective(200px) rotateX(-60deg)' }}
+          pulse
+          perspective
+          style={{ bottom: '5%', left: '73%', transform: 'translateX(-50%) perspective(200px) rotateX(-60deg) scale(1.5)' }}
           rotation={{ z: 5 }}
         />
       )}

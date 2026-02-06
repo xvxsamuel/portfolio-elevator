@@ -1,5 +1,6 @@
 .panel {
   position: relative;
+  pointer-events: auto;
 }
 
 .background {
@@ -26,4 +27,17 @@
 
 .button:active {
   transform: translate(-50%, -50%) scale(0.9);
+}
+
+.exitGlowing {
+  animation: ominousGlow 2s ease-in-out infinite;
+}
+
+@keyframes ominousGlow {
+  0%, 100% {
+    filter: drop-shadow(0 0 8px rgba(139, 0, 0, 0.6)) drop-shadow(0 0 20px rgba(139, 0, 0, 0.4));
+  }
+  50% {
+    filter: drop-shadow(0 0 15px rgba(200, 0, 0, 0.8)) drop-shadow(0 0 35px rgba(200, 0, 0, 0.5));
+  }
 }

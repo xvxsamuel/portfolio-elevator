@@ -1,6 +1,9 @@
 import { Hotspot } from '../../components/ui/Hotspot';
 import { useInventory } from '../../hooks/useInventory';
 import { useMartinaPortfolios } from './portfolio';
+import { FairyLights } from './objects/FairyLights';
+import { Rosary } from './objects/Rosary';
+import { Lava } from './objects/Lava';
 import meowSound from '../../assets/audio/elevator/meow.mp3';
 import birdSound from '../../assets/audio/martina/bird.mp3';
 import cupSound from '../../assets/audio/martina/cup.mp3';
@@ -12,6 +15,10 @@ export function MartinaHotspots() {
 
   return (
     <>
+      <FairyLights />
+      {!hasItem('rosary') && <Rosary />}
+      <Lava />
+
       <Hotspot
         x={77} y={0} width={11.2} height={28.5}
         dialogue="What a lovely whorse."

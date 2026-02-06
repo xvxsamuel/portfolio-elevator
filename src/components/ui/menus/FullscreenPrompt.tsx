@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { TextButton } from './TextButton';
+import { TextButton } from '../TextButton';
 import styles from './FullscreenPrompt.module.css';
 
 interface FullscreenPromptProps {

@@ -5,25 +5,19 @@ import styles from './InventoryBar.module.css';
 
 interface InventorySlotProps {
   item?: InventoryItem;
-  index: number;
   onHover: (item: InventoryItem | null) => void;
+  glowing?: boolean;
+  hidden?: boolean;
 }
 
-function InventorySlot({ item, index, onHover }: InventorySlotProps) {
+function InventorySlot({ item, onHover, glowing, hidden }: InventorySlotProps) {
   return (
     <div 
-      className={styles.slot} 
-      data-index={index}
+      className={`${styles.slot} ${glowing ? styles.slotGlowing : ''}`}
       onMouseEnter={() => item && onHover(item)}
       onMouseLeave={() => onHover(null)}
     >
-      {item ? (
-        <img
-          src={item.icon}
-          alt={item.name}
-          className={styles.itemIcon}
-        />
-      ) : null}
+      {item && <img src={item.icon} alt={item.name} className={`${styles.itemIcon} ${hidden ? styles.itemHidden : ''}`} />}
     </div>
   );
 }
@@ -32,16 +26,13 @@ const MAX_SLOTS = 4;
 
 interface InventoryBarProps {
   visible?: boolean;
+  glowingSlots?: number[];
+  hiddenSlots?: number[];
 }
 
-export function InventoryBar({ visible = true }: InventoryBarProps) {
+export function InventoryBar({ visible = true, glowingSlots = [], hiddenSlots = [] }: InventoryBarProps) {
   const { inventory } = useGame();
   const [hoveredItem, setHoveredItem] = useState<InventoryItem | null>(null);
-
-  const slots = Array.from({ length: MAX_SLOTS }, (_, i) => ({
-    index: i,
-    item: inventory[i],
-  }));
 
   return (
     <div className={`${styles.bar} ${visible ? styles.visible : styles.hidden}`}>
@@ -54,8 +45,14 @@ export function InventoryBar({ visible = true }: InventoryBarProps) {
         </div>
       )}
       <div className={styles.slots}>
-        {slots.map(({ index, item }) => (
-          <InventorySlot key={index} index={index} item={item} onHover={setHoveredItem} />
+        {Array.from({ length: MAX_SLOTS }, (_, i) => (
+          <InventorySlot 
+            key={i} 
+            item={inventory[i]} 
+            onHover={setHoveredItem}
+            glowing={glowingSlots.includes(i)}
+            hidden={hiddenSlots.includes(i)}
+          />
         ))}
       </div>
     </div>

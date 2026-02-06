@@ -21,7 +21,7 @@ export function LauraHotspots({ onLaptopClick, onCameraClick, onFitnessClick, on
 
       <Hotspot
         x={27} y={50.5} width={2.8} height={5}
-        dialogue="Ah, the mug has opinions.. Interesting choice of morning affirmation."
+        dialogue="Ah, the mug has opinions. Interesting choice of morning affirmation."
         sound={cupSound}
         label="Coffee mug"
       />

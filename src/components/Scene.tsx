@@ -1,5 +1,4 @@
 import { type ReactNode, type CSSProperties } from 'react';
-import { useGame } from '../context/GameProvider';
 import styles from './Scene.module.css';
 
 interface SceneProps {
@@ -9,9 +8,9 @@ interface SceneProps {
   shakePhase?: 'none' | 'building' | 'full' | 'stopping';
   shakeBuildDuration?: number;
   shakeStopDuration?: number;
-  isBlurred?: boolean;
   isFadingOut?: boolean;
   isReturning?: boolean;
+  slowFadeOut?: boolean;
 }
 
 export function Scene({ 
@@ -21,16 +20,14 @@ export function Scene({
   shakePhase = 'none',
   shakeBuildDuration = 4,
   shakeStopDuration = 3,
-  isBlurred = false,
   isFadingOut = false,
   isReturning = false,
+  slowFadeOut = false,
 }: SceneProps) {
-  const { modalOpen } = useGame();
-  
   const sceneClasses = [
     styles.scene,
-    (isBlurred || modalOpen) && styles.blurred,
     isFadingOut && styles.fadingOut,
+    isFadingOut && slowFadeOut && styles.slowFadingOut,
     isReturning && styles.returning,
     shakePhase === 'building' && styles.shakeBuilding,
     shakePhase === 'full' && styles.shakeFull,

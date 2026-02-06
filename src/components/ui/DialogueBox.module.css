@@ -1,7 +1,7 @@
 .overlay {
-  position: absolute;
+  position: fixed;
   inset: 0;
-  z-index: 200;
+  z-index: 3000;
   cursor: pointer;
   transition: opacity 0.3s ease;
 }
@@ -23,11 +23,11 @@
   transform: translateX(-50%);
   width: 620px;
   height: 140px;
-  background: var(--color-surface);
-  border: 2px solid var(--color-border);
+  background: linear-gradient(to bottom, rgba(183, 205, 216, 0.9), rgba(186, 228, 248, 0.9));
+  border: 1px solid var(--color-border);
   border-radius: 8px;
   padding: 14px 20px;
-  color: var(--color-text);
+  color: var(--color-bg);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -36,7 +36,7 @@
 .speaker {
   font-weight: bold;
   font-size: 1.1rem;
-  color: var(--color-accent);
+  color: var(--color-bg);
   margin-bottom: 8px;
 }
 
@@ -48,7 +48,7 @@
 
 .continueHint {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: flex-end;
   gap: 6px;
   margin-top: auto;
@@ -56,15 +56,16 @@
 
 .continueText {
   font-size: 0.8rem;
-  color: var(--color-text-muted);
+  color: var(--color-bg);
   font-style: italic;
+  opacity: 0.7;
 }
 
 .chevron {
-  font-size: 1.6rem;
-  line-height: 1;
-  color: var(--color-accent);
-  font-style: normal;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  color: var(--color-bg);
   animation: chevronBounce 1s ease-in-out infinite;
 }
 

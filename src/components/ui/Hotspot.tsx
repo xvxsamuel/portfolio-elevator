@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 import { useGame } from '../../context/GameProvider';
+import { getPreloadedAudio } from '../../hooks/usePreloader';
 import styles from './Hotspot.module.css';
 
 interface HotspotProps {
@@ -16,17 +17,14 @@ interface HotspotProps {
 }
 
 export function Hotspot({ x, y, width, height, onClick, dialogue, speaker, sound, label, onDialogueComplete }: HotspotProps) {
-  const { showDialogue, playerName, masterVolume, debugMode } = useGame();
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const { showDialogue, playerName, masterVolume, showHotspots } = useGame();
 
   const handleClick = () => {
     if (sound) {
-      if (!audioRef.current) {
-        audioRef.current = new Audio(sound);
-      }
-      audioRef.current.volume = masterVolume / 100;
-      audioRef.current.currentTime = 0;
-      audioRef.current.play();
+      const audio = getPreloadedAudio(sound);
+      audio.volume = masterVolume / 100;
+      audio.currentTime = 0;
+      audio.play();
     }
     
     if (dialogue) {
@@ -40,7 +38,7 @@ export function Hotspot({ x, y, width, height, onClick, dialogue, speaker, sound
 
   return (
     <div 
-      className={`${styles.hotspot} ${debugMode ? styles.debug : ''}`}
+      className={`${styles.hotspot} ${showHotspots ? styles.debug : ''}`}
       onClick={handleClick}
       style={{
         left: `${x}%`,
@@ -49,7 +47,7 @@ export function Hotspot({ x, y, width, height, onClick, dialogue, speaker, sound
         height: `${height}%`,
       }}
     >
-      {debugMode && label && <span className={styles.label}>{label}</span>}
+      {showHotspots && label && <span className={styles.label}>{label}</span>}
     </div>
   );
 }

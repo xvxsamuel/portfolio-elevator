@@ -1,7 +1,7 @@
 .closeButton {
-  background: var(--color-surface-dark);
-  border: 1px solid var(--color-border-strong);
-  color: var(--color-text);
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--color-border);
+  color: var(--color-bg);
   cursor: pointer;
   padding: 0.35rem;
   border-radius: 6px;
@@ -14,7 +14,7 @@
 }
 
 .closeButton:hover {
-  background: var(--color-surface);
+  background: rgba(0, 0, 0, 0.3);
 }
 
 .icon {

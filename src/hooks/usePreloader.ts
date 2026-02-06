@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from 'react';
-import { useGame } from '../context/GameProvider';
 
 const imageModules = import.meta.glob('../assets/images/**/*.{png,jpg,jpeg,gif,webp}', { eager: true, query: '?url', import: 'default' });
 const audioModules = import.meta.glob('../assets/audio/**/*.{mp3,wav,ogg}', { eager: true, query: '?url', import: 'default' });
@@ -9,10 +8,20 @@ const allAudioUrls = Object.values(audioModules) as string[];
 const allAssets = [...allImageUrls, ...allAudioUrls];
 
 const imageCache: HTMLImageElement[] = [];
-const audioCache: HTMLAudioElement[] = [];
+const audioCache: Map<string, HTMLAudioElement> = new Map();
+
+export function getPreloadedAudio(src: string): HTMLAudioElement {
+  const cached = audioCache.get(src);
+  if (cached) {
+    return cached;
+  }
+  const audio = new Audio(src);
+  audio.preload = 'auto';
+  audioCache.set(src, audio);
+  return audio;
+}
 
 export function usePreloader() {
-  const { debugMode } = useGame();
   const [progress, setProgress] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
   const hasStarted = useRef(false);
@@ -20,12 +29,6 @@ export function usePreloader() {
   useEffect(() => {
     if (hasStarted.current) return;
     hasStarted.current = true;
-
-    if (debugMode) {
-      setProgress(100);
-      setIsLoaded(true);
-      return;
-    }
 
     if (allAssets.length === 0) {
       setIsLoaded(true);
@@ -65,7 +68,7 @@ export function usePreloader() {
         if (loaded === total) setIsLoaded(true);
       };
       audio.src = src;
-      audioCache.push(audio);
+      audioCache.set(src, audio);
     });
   }, []);
 

@@ -1,6 +1,6 @@
 import rosaryIcon from '../assets/images/interiors/martina/rosary-item.png';
 import urnIcon from '../assets/images/interiors/julie/urn-item.png';
-import maskIcon from '../assets/images/interiors/samuel/mask.png';
+import maskIcon from '../assets/images/interiors/samuel/mask-item.png';
 import polaroidIcon from '../assets/images/interiors/laura/Polaroid.png';
 import type { InventoryItem } from '../types/game';
 

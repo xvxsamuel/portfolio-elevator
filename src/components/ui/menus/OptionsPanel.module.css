@@ -1,0 +1,42 @@
+.optionsPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.optionRow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.optionLabel {
+  color: var(--color-bg);
+  min-width: 120px;
+}
+
+.slider {
+  width: 100px;
+  cursor: pointer;
+}
+
+.volumeValue {
+  min-width: 40px;
+  color: var(--color-bg);
+}
+
+.backButton {
+  margin-top: 1rem;
+  padding: 0.5rem 0;
+  font-size: 1rem;
+  background: none;
+  color: var(--color-bg);
+  border: none;
+  cursor: pointer;
+  opacity: 0.6;
+  text-align: left;
+}
+
+.backButton:hover {
+  opacity: 1;
+}

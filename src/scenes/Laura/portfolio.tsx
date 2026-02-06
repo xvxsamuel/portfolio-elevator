@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { PortfolioModal } from '../../components/ui/PortfolioModal';
-import { PolaroidModal } from './objects/PolaroidModal';
+import { PolaroidModal } from './modals/PolaroidModal';
 import { useInventory } from '../../hooks/useInventory';
 import magazinePdf from '../../assets/images/interiors/laura/portfolio/Magazine_Laura.pdf';
 

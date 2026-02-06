@@ -19,45 +19,40 @@ interface FloorOverlaysProps {
 export function FloorOverlays({ floor }: FloorOverlaysProps) {
   const { hasItem } = useInventory();
 
-  if (floor === 1) {
-    return (
-      <>
-        <FairyLights />
-        {!hasItem('rosary') && <Rosary />}
-        <Lava />
-      </>
-    );
+  switch (floor) {
+    case 1:
+      return (
+        <>
+          <FairyLights />
+          {!hasItem('rosary') && <Rosary />}
+          <Lava />
+        </>
+      );
+    case 4:
+      return (
+        <>
+          <JulieSteam />
+          <ClockLines />
+          {!hasItem('urn') && <Urn />}
+        </>
+      );
+    case 5:
+      return (
+        <>
+          <Notes />
+          <LauraSteam />
+        </>
+      );
+    case 8:
+      return (
+        <>
+          <Cat />
+          {!hasItem('mask') && <Mask />}
+          <Fish isAnimating={false} />
+          <RecordPlayer isOpen={false} />
+        </>
+      );
+    default:
+      return null;
   }
-
-  if (floor === 8) {
-    return (
-      <>
-        <Cat />
-        {!hasItem('mask') && <Mask />}
-        <Fish isAnimating={false} />
-        <RecordPlayer isOpen={false} />
-      </>
-    );
-  }
-
-  if (floor === 4) {
-    return (
-      <>
-        <JulieSteam />
-        <ClockLines />
-        {!hasItem('urn') && <Urn />}
-      </>
-    );
-  }
-
-  if (floor === 5) {
-    return (
-      <>
-        <Notes />
-        <LauraSteam />
-      </>
-    );
-  }
-
-  return null;
 }

@@ -1,0 +1,72 @@
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  background: rgba(183, 205, 216, 0.85);
+  backdrop-filter: blur(8px);
+  z-index: 2000;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  padding: 0 10%;
+}
+
+.title {
+  font-size: 3rem;
+  margin-bottom: 2rem;
+  color: var(--color-bg);
+}
+
+.menuContainer {
+  min-height: 150px;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: flex-start;
+}
+
+.menuButton {
+  padding: 0.5rem 0;
+  font-size: 1.5rem;
+  background: none;
+  color: var(--color-bg);
+  border: none;
+  cursor: pointer;
+  opacity: 0.6;
+}
+
+.menuButton:hover {
+  opacity: 1;
+}
+
+.confirmPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.confirmText {
+  color: var(--color-bg);
+  font-size: 1.1rem;
+}
+
+.confirmButtons {
+  display: flex;
+  gap: 1.5rem;
+}

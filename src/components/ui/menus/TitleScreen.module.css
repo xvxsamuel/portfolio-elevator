@@ -4,16 +4,25 @@
   display: flex;
   align-items: center;
   background: var(--color-accent-dark);
-  z-index: 1000;
-  animation: fadeIn 0.5s ease-out;
+  z-index: 1001;
 }
 
-@keyframes fadeIn {
+.fadeIn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: black;
+  z-index: 100;
+  animation: fadeFromBlackOverlay 1.5s ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes fadeFromBlackOverlay {
   from {
-    opacity: 0;
+    opacity: 1;
   }
   to {
-    opacity: 1;
+    opacity: 0;
   }
 }
 
@@ -152,48 +161,5 @@
 }
 
 .menuButton:hover {
-  opacity: 1;
-}
-
-.optionsPanel {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.optionRow {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.optionLabel {
-  color: var(--color-bg);
-  min-width: 120px;
-}
-
-.slider {
-  width: 100px;
-  cursor: pointer;
-}
-
-.volumeValue {
-  min-width: 40px;
-  color: var(--color-bg);
-}
-
-.backButton {
-  margin-top: 1rem;
-  padding: 0.5rem 0;
-  font-size: 1rem;
-  background: none;
-  color: var(--color-bg);
-  border: none;
-  cursor: pointer;
-  opacity: 0.6;
-  text-align: left;
-}
-
-.backButton:hover {
   opacity: 1;
 }

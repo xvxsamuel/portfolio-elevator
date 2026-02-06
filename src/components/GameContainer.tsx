@@ -11,14 +11,16 @@ interface GameContainerProps {
 }
 
 export function GameContainer({ children, sceneContent, className }: GameContainerProps) {
-  const { parallaxEnabled } = useGame();
-  const { handleMouseMove, parallaxStyle } = useParallax({ maxOffsetX: 12, maxOffsetY: 8, scale: 1.03 });
+  const { parallaxEnabled, modalOpen } = useGame();
+  const { handleMouseMove, targetRef } = useParallax({ maxOffsetX: 12, maxOffsetY: 8, scale: 1.03, enabled: parallaxEnabled && !modalOpen });
+
+  const parallaxClasses = clsx(styles.parallaxLayer, modalOpen && styles.blurred);
 
   return (
-    <div className={clsx(styles.wrapper, className)} onMouseMove={parallaxEnabled ? handleMouseMove : undefined}>
+    <div className={clsx(styles.wrapper, className)} onMouseMove={handleMouseMove}>
       <div className={styles.container}>
         {sceneContent && (
-          <div className={styles.parallaxLayer} style={parallaxEnabled ? parallaxStyle : undefined}>
+          <div ref={targetRef} className={parallaxClasses}>
             {sceneContent}
           </div>
         )}

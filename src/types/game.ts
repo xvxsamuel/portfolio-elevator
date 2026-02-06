@@ -41,6 +41,8 @@ export interface GameState {
   playerName: string;
   currentFloor: number | null;
   debugMode: boolean;
+  showHotspots: boolean;
+  isPaused: boolean;
 }
 
 export interface GameContextType extends GameState {
@@ -57,4 +59,11 @@ export interface GameContextType extends GameState {
   setPlayerName: (name: string) => void;
   setCurrentFloor: (floor: number | null) => void;
   setDebugMode: (enabled: boolean) => void;
+  setShowHotspots: (enabled: boolean) => void;
+  resetGameState: () => void;
+  registerAudio: (audio: HTMLAudioElement) => void;
+  unregisterAudio: (audio: HTMLAudioElement) => void;
+  pauseAllAudio: () => void;
+  resumeAllAudio: () => void;
+  stopAllAudio: () => void;
 }

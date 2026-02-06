@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Scene } from '../../components/Scene';
-import { BackArrow } from '../../components/ui/BackArrow';
+import { Arrow } from '../../components/ui/Arrow';
 import { LauraHotspots } from './hotspots';
 import { useLauraPortfolios } from './portfolio';
 import lauraBg from '../../assets/images/interiors/laura/main.png';
@@ -27,10 +27,12 @@ export function LauraScene({ onBack }: LauraSceneProps) {
         onMagazineClick={openMagazine}
       />
       {onBack && (
-        <BackArrow 
+        <Arrow 
           onClick={onBack}
           visible={arrowVisible}
-          style={{ bottom: '6%', left: '75%', transform: 'translateX(-50%) perspective(200px) rotateX(-60deg)' }}
+          pulse
+          perspective
+          style={{ bottom: '6%', left: '75%', transform: 'translateX(-50%) perspective(200px) rotateX(-60deg) scale(1.5)' }}
           rotation={{ z: -10 }}
         />
       )}

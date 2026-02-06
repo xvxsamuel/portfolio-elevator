@@ -14,23 +14,14 @@ export function useInventory() {
     const item = ITEMS[itemId];
     if (item && !hasItem(itemId)) {
       addToInventory(item);
-      return true;
     }
-    return false;
   }, [addToInventory, hasItem]);
 
   const removeItem = useCallback((itemId: ItemId) => {
     if (hasItem(itemId)) {
       removeFromInventory(itemId);
-      return true;
     }
-    return false;
   }, [removeFromInventory, hasItem]);
 
-  return {
-    inventory,
-    hasItem,
-    addItem,
-    removeItem,
-  };
+  return { inventory, hasItem, addItem, removeItem };
 }

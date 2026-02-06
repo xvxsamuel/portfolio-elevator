@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useCallback, useMemo } from 'react';
+import { createContext, useContext, useState, useCallback, useMemo, useRef } from 'react';
 import type { ReactNode } from 'react';
 import type { SceneName, InventoryItem, GameContextType, DialogueData } from '../types/game';
 
@@ -46,6 +46,10 @@ export function GameProvider({ children }: GameProviderProps) {
   const [playerName, setPlayerNameState] = useState('');
   const [currentFloor, setCurrentFloorState] = useState<number | null>(null);
   const [debugMode, setDebugModeState] = useState(getInitialDebugMode);
+  const [showHotspots, setShowHotspotsState] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+  const registeredAudios = useRef<Set<HTMLAudioElement>>(new Set());
+  const pausedAudios = useRef<Set<HTMLAudioElement>>(new Set());
 
   const setScene = useCallback((scene: SceneName) => {
     setCurrentScene(scene);
@@ -77,16 +81,20 @@ export function GameProvider({ children }: GameProviderProps) {
     setModalOpenState(open);
   }, []);
 
+  const dialogueRef = useRef<{ text: string; speaker?: string; onComplete?: () => void } | null>(null);
+
   const showDialogueFunc = useCallback((text: string, speaker?: string, onComplete?: () => void) => {
-    setDialogue({ text, speaker, onComplete });
+    const dialogueData = { text, speaker, onComplete };
+    dialogueRef.current = dialogueData;
+    setDialogue(dialogueData);
     setDialogueCount(prev => prev + 1);
   }, []);
 
   const dismissDialogue = useCallback(() => {
-    setDialogue(prev => {
-      prev?.onComplete?.();
-      return null;
-    });
+    const callback = dialogueRef.current?.onComplete;
+    dialogueRef.current = null;
+    setDialogue(null);
+    callback?.();
   }, []);
 
   const setPlayerName = useCallback((name: string) => {
@@ -102,6 +110,56 @@ export function GameProvider({ children }: GameProviderProps) {
     localStorage.setItem('debugMode', JSON.stringify(enabled));
   }, []);
 
+  const setShowHotspots = useCallback((enabled: boolean) => {
+    setShowHotspotsState(enabled);
+  }, []);
+
+  const resetGameState = useCallback(() => {
+    setInventory([]);
+    setPlayerNameState('');
+    setCurrentFloorState(null);
+    setDialogue(null);
+    setDialogueCount(0);
+  }, []);
+
+  const registerAudio = useCallback((audio: HTMLAudioElement) => {
+    registeredAudios.current.add(audio);
+  }, []);
+
+  const unregisterAudio = useCallback((audio: HTMLAudioElement) => {
+    registeredAudios.current.delete(audio);
+    pausedAudios.current.delete(audio);
+  }, []);
+
+  const pauseAllAudio = useCallback(() => {
+    setIsPaused(true);
+    pausedAudios.current.clear();
+    registeredAudios.current.forEach(audio => {
+      if (!audio.paused) {
+        pausedAudios.current.add(audio);
+        audio.pause();
+      }
+    });
+  }, []);
+
+  const resumeAllAudio = useCallback(() => {
+    setIsPaused(false);
+    pausedAudios.current.forEach(audio => {
+      audio.play().catch(() => {});
+    });
+    pausedAudios.current.clear();
+  }, []);
+
+  const stopAllAudio = useCallback(() => {
+    setIsPaused(false);
+    registeredAudios.current.forEach(audio => {
+      audio.pause();
+      audio.currentTime = 0;
+    });
+    registeredAudios.current.clear();
+    pausedAudios.current.clear();
+  }, []);
+
   const value: GameContextType = useMemo(() => ({
     currentScene,
     inventory,
@@ -115,6 +173,8 @@ export function GameProvider({ children }: GameProviderProps) {
     playerName,
     currentFloor,
     debugMode,
+    showHotspots,
+    isPaused,
     setScene,
     addToInventory,
     removeFromInventory,
@@ -128,7 +188,14 @@ export function GameProvider({ children }: GameProviderProps) {
     setPlayerName,
     setCurrentFloor,
     setDebugMode,
-  }), [currentScene, inventory, isLoading, loadingProgress, parallaxEnabled, masterVolume, modalOpen, dialogue, dialogueCount, playerName, currentFloor, debugMode, setScene, addToInventory, removeFromInventory, setLoading, setParallaxEnabled, setMasterVolume, setModalOpen, showDialogueFunc, dismissDialogue, setPlayerName, setCurrentFloor, setDebugMode]);
+    setShowHotspots,
+    resetGameState,
+    registerAudio,
+    unregisterAudio,
+    pauseAllAudio,
+    resumeAllAudio,
+    stopAllAudio,
+  }), [currentScene, inventory, isLoading, loadingProgress, parallaxEnabled, masterVolume, modalOpen, dialogue, dialogueCount, playerName, currentFloor, debugMode, showHotspots, isPaused, setScene, addToInventory, removeFromInventory, setLoading, setParallaxEnabled, setMasterVolume, setModalOpen, showDialogueFunc, dismissDialogue, setPlayerName, setCurrentFloor, setDebugMode, setShowHotspots, resetGameState, registerAudio, unregisterAudio, pauseAllAudio, resumeAllAudio, stopAllAudio]);
 
   return <GameContext.Provider value={value}>{children}</GameContext.Provider>;
 }

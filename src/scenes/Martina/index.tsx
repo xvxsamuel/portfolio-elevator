@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Scene } from '../../components/Scene';
-import { BackArrow } from '../../components/ui/BackArrow';
-import { FloorOverlays } from '../Elevator/FloorOverlays';
+import { Arrow } from '../../components/ui/Arrow';
 import { MartinaHotspots } from './hotspots';
 import martinaBg from '../../assets/images/interiors/martina/main.png';
 
@@ -19,14 +18,15 @@ export function MartinaScene({ onBack }: MartinaSceneProps) {
 
   return (
     <Scene className="martina-scene" backgroundImage={martinaBg}>
-      <FloorOverlays floor={1} />
       <MartinaHotspots />
 
       {onBack && (
-        <BackArrow 
+        <Arrow 
           onClick={onBack}
           visible={arrowVisible}
-          style={{ bottom: '5%', left: '70%', transform: 'translateX(-50%) perspective(200px) rotateX(-60deg)' }}
+          pulse
+          perspective
+          style={{ bottom: '5%', left: '70%', transform: 'translateX(-50%) perspective(200px) rotateX(-60deg) scale(1.5)' }}
           rotation={{ z: -10 }}
         />
       )}

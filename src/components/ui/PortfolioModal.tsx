@@ -4,6 +4,8 @@ import useEmblaCarousel from 'embla-carousel-react';
 import { useGame } from '../../context/GameProvider';
 import { useFloorTheme } from '../../hooks/useFloorTheme';
 import { CloseButton } from './CloseButton';
+import { TextButton } from './TextButton';
+import { ChevronLeft, ChevronRight } from './icons';
 import styles from './PortfolioModal.module.css';
 
 export interface PortfolioImage {
@@ -147,7 +149,7 @@ export function PortfolioModal({
                     disabled={!canScrollPrev}
                     aria-label="Previous slide"
                   >
-                    <span className={styles.chevron}>‹</span>
+                    <ChevronLeft className={styles.chevron} />
                   </button>
                   
                   <div className={styles.dots}>
@@ -167,7 +169,7 @@ export function PortfolioModal({
                     disabled={!canScrollNext}
                     aria-label="Next slide"
                   >
-                    <span className={styles.chevron}>›</span>
+                    <ChevronRight className={styles.chevron} />
                   </button>
                 </div>
               )}
@@ -179,14 +181,14 @@ export function PortfolioModal({
           </div>
 
           {externalLink && (
-            <a
+            <TextButton
               href={externalLink}
-              target="_blank"
-              rel="noopener noreferrer"
+              variant="dark"
+              withChevron
               className={styles.externalLinkButton}
             >
-              Click here to view {linkLabel || 'link'} <span className={styles.linkChevron}>›</span>
-            </a>
+              Click here to view {linkLabel || 'link'}
+            </TextButton>
           )}
         </div>
       </div>
