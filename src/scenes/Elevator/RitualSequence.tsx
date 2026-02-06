@@ -172,7 +172,7 @@ export function RitualSequence({ isActive, onComplete, onStopTheme, onFlash, onG
             onComplete();
           }, 5000);
         }, 3000);
-      }, 13000);
+      }, 12900);
     }, 4000);
   };
 

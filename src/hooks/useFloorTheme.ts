@@ -110,7 +110,7 @@ export function useFloorTheme() {
         clearFadeInterval();
         if (registeredUnregister) registeredUnregister(audio);
         audio.pause();
-        audio.src = '';
+        audio.currentTime = 0;
         activeAudio = null;
         activeFloor = null;
         registeredUnregister = null;
