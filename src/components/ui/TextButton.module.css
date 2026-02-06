@@ -1,6 +1,6 @@
 .button {
   background: var(--color-bg);
-  border: 1px solid var(--color-border-strong);
+  border: 1px solid var(--color-border);
   color: var(--color-text);
   cursor: pointer;
   padding: 0.5rem 1.5rem;
@@ -23,6 +23,10 @@
   background: var(--color-bg);
 }
 
+.dark:hover {
+  filter: brightness(1.4);
+}
+
 .light {
   background: linear-gradient(to bottom, rgba(183, 205, 216, 0.95), rgba(186, 228, 248, 0.95));
   border-color: var(--color-border);
@@ -30,8 +34,8 @@
 }
 
 .active {
-  background: var(--color-accent);
-  border-color: var(--color-border-strong);
+  background: linear-gradient(to bottom, var(--color-accent), white);
+  border-color: var(--color-border);
   color: var(--color-bg);
 }
 

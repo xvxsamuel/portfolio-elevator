@@ -148,12 +148,15 @@ export function RitualSequence({ isActive, onComplete, onStopTheme, onFlash, onG
         setIsDark(false);
         setIsFastSpin(false);
         setItemsInCircle([]);
-        onFlash();
         
         const flashAudio = getPreloadedAudio(flashSound);
         flashAudio.volume = (masterVolume / 100) * 0.6;
         flashAudio.currentTime = 0;
         flashAudio.play();
+        
+        setTimeout(() => {
+          onFlash();
+        }, 250);
         
         setTimeout(() => {
           setFlashFading(true);

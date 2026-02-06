@@ -40,6 +40,7 @@ export function Fish({ isAnimating }: FishProps) {
     backgroundRepeat: 'no-repeat',
     pointerEvents: 'none',
     zIndex: 3,
+    transition: 'opacity 0.05s ease',
   };
 
   return (

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 
-const imageModules = import.meta.glob('../assets/images/**/*.{png,jpg,jpeg,gif,webp}', { eager: true, query: '?url', import: 'default' });
-const audioModules = import.meta.glob('../assets/audio/**/*.{mp3,wav,ogg}', { eager: true, query: '?url', import: 'default' });
+const imageModules = import.meta.glob('../assets/images/**/*.{png,jpg,jpeg,gif,webp}', { eager: true, import: 'default' });
+const audioModules = import.meta.glob('../assets/audio/**/*.{mp3,wav,ogg}', { eager: true, import: 'default' });
 
 const allImageUrls = Object.values(imageModules) as string[];
 const allAudioUrls = Object.values(audioModules) as string[];

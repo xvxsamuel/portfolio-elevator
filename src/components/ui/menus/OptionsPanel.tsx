@@ -47,6 +47,7 @@ export function OptionsPanel({ onBack }: OptionsPanelProps) {
           value={masterVolume}
           onChange={(e) => setMasterVolume(Number(e.target.value))}
           className={styles.slider}
+          style={{ '--value': `${masterVolume}%` } as React.CSSProperties}
         />
         <span className={styles.volumeValue}>{masterVolume}%</span>
       </div>

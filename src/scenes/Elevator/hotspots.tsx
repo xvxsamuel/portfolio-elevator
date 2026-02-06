@@ -23,14 +23,14 @@ export function ElevatorHotspots({ onButtonsClick, onExitClick }: ElevatorHotspo
       
       <Hotspot 
         x={73.5} y={71.5} width={15} height={25}
-        dialogue="Disgusting."
+        dialogue="Eww... Smells like Den Haag HS."
         sound={rustleSound}
         label="Trash"
       />
 
       <Hotspot 
         x={15} y={74.5} width={14.5} height={17}
-        dialogue="What a practical and multi-purpose item. I can't believe I got it for free!"
+        dialogue="What a practical multi-purpose bag. I can't believe I got it for free!"
         label="Bag"
       />
 
