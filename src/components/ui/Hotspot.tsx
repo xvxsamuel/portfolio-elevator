@@ -1,4 +1,3 @@
-import { useRef } from 'react';
 import { useGame } from '../../context/GameProvider';
 import { getPreloadedAudio } from '../../hooks/usePreloader';
 import styles from './Hotspot.module.css';
