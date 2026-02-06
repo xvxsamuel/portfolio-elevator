@@ -40,13 +40,12 @@ export function Fish({ isAnimating }: FishProps) {
     backgroundRepeat: 'no-repeat',
     pointerEvents: 'none',
     zIndex: 3,
-    transition: 'opacity 0.05s ease',
   };
 
   return (
     <>
-      <div style={{ ...baseStyle, backgroundImage: `url(${fish1})`, opacity: frame === 0 ? 1 : 0 }} />
-      <div style={{ ...baseStyle, backgroundImage: `url(${fish2})`, opacity: frame === 1 ? 1 : 0 }} />
+      {frame === 0 && <div style={{ ...baseStyle, backgroundImage: `url(${fish1})` }} />}
+      {frame === 1 && <div style={{ ...baseStyle, backgroundImage: `url(${fish2})` }} />}
     </>
   );
 }
