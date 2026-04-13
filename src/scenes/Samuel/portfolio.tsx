@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { PortfolioModal, type PortfolioImage } from '../../components/ui/PortfolioModal';
+import gamePdf from '../../assets/images/interiors/samuel/portfolio/Game_Samuel.pdf';
 
 const placeholderPortfolio = {
   title: "ARAM PIG: React, Next.js, Postgres, Tailwind",
@@ -9,10 +10,20 @@ const placeholderPortfolio = {
   linkLabel: "website",
 };
 
+const gamePortfolio = {
+  title: "Game Design Sprint",
+  images: [] as PortfolioImage[],
+  description: ``,
+  externalLink: gamePdf,
+  linkLabel: "game document",
+};
+
 export function useSamuelPortfolios() {
   const [portfolioOpen, setPortfolioOpen] = useState(false);
+  const [gameOpen, setGameOpen] = useState(false);
 
   const openPortfolio = () => setPortfolioOpen(true);
+  const openGame = () => setGameOpen(true);
 
   const modals = (
     <>
@@ -26,8 +37,18 @@ export function useSamuelPortfolios() {
       >
         <p>{placeholderPortfolio.description}</p>
       </PortfolioModal>
+      <PortfolioModal
+        isOpen={gameOpen}
+        onClose={() => setGameOpen(false)}
+        title={gamePortfolio.title}
+        images={gamePortfolio.images}
+        externalLink={gamePortfolio.externalLink}
+        linkLabel={gamePortfolio.linkLabel}
+      >
+        <p>{gamePortfolio.description}</p>
+      </PortfolioModal>
     </>
   );
 
-  return { openPortfolio, modals };
+  return { openPortfolio, openGame, modals };
 }

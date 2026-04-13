@@ -14,7 +14,7 @@ import fishSound from '../../assets/audio/samuel/fish.mp3';
 export function SamuelHotspots() {
   const { hasItem, addItem } = useInventory();
   const { showDialogue, playerName, masterVolume } = useGame();
-  const { openPortfolio, modals } = useSamuelPortfolios();
+  const { openPortfolio, openGame, modals } = useSamuelPortfolios();
   const [recordPlayerOpen, setRecordPlayerOpen] = useState(false);
   const [fishAnimating, setFishAnimating] = useState(false);
   const fishTimeoutRef = useRef<number | null>(null);
@@ -24,16 +24,18 @@ export function SamuelHotspots() {
       clearTimeout(fishTimeoutRef.current);
     }
     setFishAnimating(true);
-    
+
     const fishAudio = getPreloadedAudio(fishSound);
     fishAudio.volume = masterVolume / 100;
     fishAudio.currentTime = 0;
     fishAudio.play();
-    
+
     fishTimeoutRef.current = window.setTimeout(() => {
       setFishAnimating(false);
       fishTimeoutRef.current = null;
     }, 2000);
+
+    openGame();
   };
 
   const handleRecordPlayerClick = () => {
